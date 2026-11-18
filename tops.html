@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Top Factions — Cold War</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0e100c;
+    --bg2:#151a11;
+    --line:#2b3323;
+    --accent:#c8d94e;
+    --accent2:#e0b45c;
+    --text:#e9ebda;
+    --muted:#98a08a;
+    --radius:14px;
+    --shadow: rgba(0,0,0,0.5);
+    
+    --gold: #f1c40f;
+    --silver: #bdc3c7;
+    --bronze: #cd7f32;
+  }
+
+  body.light-theme {
+    --bg:#f4f6f0;
+    --bg2:#ffffff;
+    --line:#d0d6c5;
+    --accent:#9abf2b;
+    --accent2:#d49b3b;
+    --text:#1a1e16;
+    --muted:#5c6654;
+    --shadow: rgba(0,0,0,0.1);
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+
+  body{
+    font-family:'Inter',system-ui,-apple-system,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    transition: background-color 0.3s, color 0.3s;
+  }
+
+  body::before{
+    content:'';
+    position:fixed;
+    inset:0;
+    background-image:
+      linear-gradient(rgba(200,217,78,.045) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(200,217,78,.045) 1px, transparent 1px);
+    background-size:52px 52px;
+    pointer-events:none;
+    z-index:0;
+  }
+  body.light-theme::before { opacity: 0.2; }
+
+  header,main,footer{position:relative;z-index:1}
+
+  header{
+    background:rgba(14,16,12,.95);
+    border-bottom:1px solid var(--line);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+    height: 60px;
+    flex-shrink: 0;
+  }
+  body.light-theme header { background:rgba(255,255,255,.95); }
+
+  .header-left { display: flex; align-items: center; gap: 20px; }
+
+  .back-btn {
+    color: var(--text);
+    text-decoration: none;
+    font-family: 'Oswald', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: color 0.2s;
+  }
+  .back-btn:hover { color: var(--accent); }
+
+  .header-controls { display: flex; align-items: center; gap: 10px; }
+
+  .icon-btn {
+    background: transparent;
+    border: 1px solid var(--line);
+    color: var(--text);
+    width: 34px; height: 34px;
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; font-size: 16px; transition: all 0.2s;
+  }
+  .icon-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+  main {
+    flex: 1;
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    width: 100%;
+  }
+
+  .page-title {
+    font-family:'Oswald',sans-serif;
+    font-weight:700;
+    font-size: clamp(2rem, 5vw, 3rem);
+    text-transform: uppercase;
+    letter-spacing:.02em;
+    margin-bottom: 10px;
+    text-align: center;
+  }
+  .page-title span { color: var(--accent); }
+  .page-sub { color: var(--muted); margin-bottom: 40px; font-size: 15px; text-align: center; }
+
+  /* Подиум для Топ-3 */
+  .podium-grid {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 15px;
+    margin-bottom: 50px;
+    flex-wrap: wrap;
+  }
+
+  .podium-card {
+    background: var(--bg2);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 20px;
+    text-align: center;
+    width: 220px;
+    position: relative;
+    transition: transform 0.3s;
+  }
+  .podium-card:hover { transform: translateY(-5px); }
+  
+  .podium-card.rank-1 { border-color: var(--gold); box-shadow: 0 0 20px rgba(241, 196, 15, 0.2); transform: scale(1.1); z-index: 2; }
+  .podium-card.rank-2 { border-color: var(--silver); margin-bottom: 20px; }
+  .podium-card.rank-3 { border-color: var(--bronze); margin-bottom: 40px; }
+
+  .podium-medal { font-size: 40px; margin-bottom: 10px; line-height: 1; }
+  .podium-name { font-family: 'Oswald', sans-serif; font-size: 1.2rem; font-weight: 700; text-transform: uppercase; margin-bottom: 5px; }
+  .podium-rating { font-size: 1.5rem; font-weight: 700; color: var(--accent); font-family: 'Oswald', sans-serif; }
+
+  /* Список остальных */
+  .list-header {
+    display: grid;
+    grid-template-columns: 60px 1fr 100px;
+    padding: 10px 20px;
+    font-size: 12px;
+    color: var(--muted);
+    text-transform: uppercase;
+    font-weight: 600;
+    border-bottom: 1px solid var(--line);
+    margin-bottom: 10px;
+  }
+
+  .rank-row {
+    display: grid;
+    grid-template-columns: 60px 1fr 100px;
+    align-items: center;
+    padding: 15px 20px;
+    background: var(--bg2);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    margin-bottom: 10px;
+    transition: all 0.2s;
+  }
+  .rank-row:hover { border-color: var(--accent); transform: translateX(5px); }
+
+  .rank-number {
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--muted);
+  }
+  
+  .rank-name {
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+  
+  .rank-side {
+    font-size: 11px;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .rank-rating {
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--accent);
+    text-align: right;
+  }
+
+  .flag-icon {
+    width: 16px; height: 12px;
+    object-fit: cover;
+    border-radius: 2px;
+    box-shadow: 0 0 2px rgba(0,0,0,0.5);
+  }
+
+  @media(max-width: 768px) {
+    .podium-grid { flex-direction: column; align-items: center; }
+    .podium-card { width: 100%; max-width: 300px; }
+    .podium-card.rank-1, .podium-card.rank-2, .podium-card.rank-3 { margin-bottom: 0; transform: none; }
+    .list-header { grid-template-columns: 40px 1fr 80px; }
+    .rank-row { grid-template-columns: 40px 1fr 80px; padding: 15px 10px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-left">
+    <a href="index.html" class="back-btn">
+      <span>←</span> <span data-i18n="btn_back">Back to Home</span>
+    </a>
+    <a href="factions.html" class="back-btn" style="color: var(--accent); margin-left: 10px;">
+      📁 Factions
+    </a>
+  </div>
+  
+  <div class="header-controls">
+    <button class="icon-btn" id="themeToggle" title="Toggle Theme">🌓</button>
+  </div>
+</header>
+
+<main>
+  <h1 class="page-title">Top <span>Factions</span></h1>
+  <p class="page-sub">Global leaderboard based on faction rating</p>
+
+  <div id="topsContainer">
+    <div style="text-align: center; color: var(--muted); padding: 40px;">Загрузка рейтинга...</div>
+  </div>
+</main>
+
+<script>
+// --- СИСТЕМА ТЕМ ---
+const themeToggle = document.getElementById('themeToggle');
+if (localStorage.getItem('cw-theme') === 'light') {
+  document.body.classList.add('light-theme');
+}
+themeToggle.addEventListener('click', () => {
+  document.body.classList.toggle('light-theme');
+  localStorage.setItem('cw-theme', document.body.classList.contains('light-theme') ? 'light' : 'dark');
+});
+
+// --- ЛОГИКА ТОПОВ ---
+let factionsData = [];
+
+async function initTops() {
+  const localDB = localStorage.getItem('cw_local_db');
+  if (localDB) {
+    try { factionsData = JSON.parse(localDB); } catch(e) {}
+  } else {
+    try {
+      const res = await fetch('factions.json');
+      if (res.ok) factionsData = await res.json();
+    } catch(e) {}
+  }
+
+  // Сортируем по рейтингу (по убыванию). Если рейтинга нет, ставим 0.
+  factionsData.sort((a, b) => (b.rating || 0) - (a.rating || 0));
+
+  renderTops();
+}
+
+function renderTops() {
+  const container = document.getElementById('topsContainer');
+  container.innerHTML = '';
+
+  if (factionsData.length === 0) {
+    container.innerHTML = '<div style="text-align: center; color: var(--muted); padding: 40px;">Фракции не найдены.</div>';
+    return;
+  }
+
+  const top3 = factionsData.slice(0, 3);
+  const rest = factionsData.slice(3);
+
+  // Рендер Подиума
+  if (top3.length > 0) {
+    const podiumGrid = document.createElement('div');
+    podiumGrid.className = 'podium-grid';
+
+    const medals = ['🥇', '🥈', '🥉'];
+    const classes = ['rank-1', 'rank-2', 'rank-3'];
+
+    // Чтобы 1 место было по центру, выводим 2, 1, 3 (если есть)
+    const displayOrder = [];
+    if (top3[1]) displayOrder.push({ data: top3[1], index: 1 });
+    if (top3[0]) displayOrder.push({ data: top3[0], index: 0 });
+    if (top3[2]) displayOrder.push({ data: top3[2], index: 2 });
+
+    displayOrder.forEach(item => {
+      const f = item.data;
+      const i = item.index;
+      
+      const card = document.createElement('div');
+      card.className = `podium-card ${classes[i]}`;
+      
+      const sideFlag = f.side === 'NATO' ? '<img src="foto/nato.png" class="flag-icon"> NATO' : '<img src="foto/pact.png" class="flag-icon"> PACT';
+
+      card.innerHTML = `
+        <div class="podium-medal">${medals[i]}</div>
+        <div class="podium-name">${f.name}</div>
+        <div class="podium-side" style="font-size:11px; color:var(--muted); margin-bottom:10px;">${sideFlag}</div>
+        <div class="podium-rating">${f.rating || 0} <span style="font-size:12px;color:var(--muted);">PTS</span></div>
+      `;
+      podiumGrid.appendChild(card);
+    });
+    container.appendChild(podiumGrid);
+  }
+
+  // Рендер остального списка
+  if (rest.length > 0) {
+    const listContainer = document.createElement('div');
+    listContainer.innerHTML = `
+      <div class="list-header">
+        <div>Rank</div>
+        <div>Faction</div>
+        <div style="text-align:right;">Rating</div>
+      </div>
+    `;
+
+    rest.forEach((f, index) => {
+      const rank = index + 4;
+      const row = document.createElement('div');
+      row.className = 'rank-row';
+      
+      const sideFlag = f.side === 'NATO' ? '<img src="foto/nato.png" class="flag-icon">' : '<img src="foto/pact.png" class="flag-icon">';
+
+      row.innerHTML = `
+        <div class="rank-number">#${rank}</div>
+        <div>
+          <div class="rank-name">${f.name}</div>
+          <div class="rank-side">${sideFlag} ${f.side}</div>
+        </div>
+        <div class="rank-rating">${f.rating || 0}</div>
+      `;
+      listContainer.appendChild(row);
+    });
+
+    container.appendChild(listContainer);
+  }
+}
+
+initTops();
+</script>
+</body>
+</html>

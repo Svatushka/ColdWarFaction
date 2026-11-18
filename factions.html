@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Factions Directory — Cold War</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0e100c; --bg2:#151a11; --line:#2b3323; --accent:#c8d94e; --accent2:#e0b45c;
+    --text:#e9ebda; --muted:#98a08a; --radius:14px; --nato:#3498db; --pact:#e74c3c; --shadow: rgba(0,0,0,0.5);
+  }
+  body.light-theme {
+    --bg:#f4f6f0; --bg2:#ffffff; --line:#d0d6c5; --accent:#9abf2b; --accent2:#d49b3b;
+    --text:#1a1e16; --muted:#5c6654; --shadow: rgba(0,0,0,0.1);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Inter',system-ui,-apple-system,sans-serif; background:var(--bg); color:var(--text);
+    line-height:1.65; -webkit-font-smoothing:antialiased; min-height: 100vh; display: flex;
+    flex-direction: column; transition: background-color 0.3s, color 0.3s;
+  }
+  body::before{
+    content:''; position:fixed; inset:0;
+    background-image: linear-gradient(rgba(200,217,78,.045) 1px, transparent 1px), linear-gradient(90deg, rgba(200,217,78,.045) 1px, transparent 1px);
+    background-size:52px 52px; pointer-events:none; z-index:0;
+  }
+  body.light-theme::before { opacity: 0.2; }
+  header,main,footer{position:relative;z-index:1}
+  header{
+    background:rgba(14,16,12,.95); border-bottom:1px solid var(--line); display: flex;
+    align-items: center; justify-content: space-between; padding: 10px 20px; height: 60px; flex-shrink: 0;
+  }
+  body.light-theme header { background:rgba(255,255,255,.95); }
+  .header-left { display: flex; align-items: center; gap: 20px; }
+  .back-btn {
+    color: var(--text); text-decoration: none; font-family: 'Oswald', sans-serif; font-size: 15px;
+    font-weight: 600; text-transform: uppercase; display: flex; align-items: center; gap: 8px; transition: color 0.2s;
+  }
+  .back-btn:hover { color: var(--accent); }
+  .admin-btn {
+    background: transparent; border: 1px solid var(--muted); color: var(--muted); padding: 6px 12px;
+    border-radius: 6px; font-size: 11px; font-weight: 700; text-transform: uppercase; cursor: pointer;
+    transition: all 0.2s; letter-spacing: 0.05em;
+  }
+  .admin-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .admin-btn.active { background: var(--accent); color: #12140c; border-color: var(--accent); }
+  .header-controls { display: flex; align-items: center; gap: 10px; }
+  .icon-btn {
+    background: transparent; border: 1px solid var(--line); color: var(--text); width: 34px; height: 34px;
+    border-radius: 6px; display: flex; align-items: center; justify-content: center; cursor: pointer;
+    font-size: 16px; transition: all 0.2s;
+  }
+  .icon-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .lang-switch{ display:flex; gap:6px; padding:4px; border:1px solid var(--line); border-radius:8px; background:rgba(255,255,255,.02); }
+  .lang{
+    border:0; background:transparent; color:var(--muted); font-family:'Inter',sans-serif; font-size:11px;
+    font-weight:600; letter-spacing:.08em; padding:5px 8px; border-radius:4px; cursor:pointer; transition:all .18s;
+  }
+  .lang:hover{color:var(--text);background:rgba(255,255,255,.05)}
+  .lang.active{ background:var(--accent); color:#12140c; }
+  main { flex: 1; max-width: 1180px; margin: 0 auto; padding: 40px 20px; width: 100%; }
+  .page-title { font-family:'Oswald',sans-serif; font-weight:700; font-size: clamp(2rem, 5vw, 3rem); text-transform: uppercase; margin-bottom: 10px; }
+  .page-sub { color: var(--muted); margin-bottom: 30px; font-size: 15px; }
+  .filters { display: flex; flex-wrap: wrap; gap: 15px; margin-bottom: 30px; padding: 15px; background: var(--bg2); border: 1px solid var(--line); border-radius: var(--radius); }
+  .filter-group { display: flex; align-items: center; gap: 8px; }
+  .filter-label { font-size: 12px; color: var(--muted); text-transform: uppercase; font-weight: 600; margin-right: 5px; }
+  .flag-icon { width: 16px; height: 12px; object-fit: cover; border-radius: 2px; box-shadow: 0 0 2px rgba(0,0,0,0.5); }
+  .filter-btn {
+    background: transparent; border: 1px solid #3a4a35; color: var(--text); padding: 6px 14px; border-radius: 6px;
+    cursor: pointer; font-size: 13px; font-weight: 600; transition: all 0.2s; display: inline-flex; align-items: center; gap: 6px;
+  }
+  body.light-theme .filter-btn { border-color: #ccc; }
+  .filter-btn:hover { border-color: var(--accent); }
+  .filter-btn.active { background: var(--accent); color: #12140c; border-color: var(--accent); }
+  .filter-btn[data-filter="NATO"].active { background: var(--nato); color: #fff; border-color: var(--nato); }
+  .filter-btn[data-filter="PACT"].active { background: var(--pact); color: #fff; border-color: var(--pact); }
+  .search-box { margin-left: auto; position: relative; }
+  .search-box input { background: var(--bg); border: 1px solid var(--line); color: var(--text); padding: 8px 12px; border-radius: 6px; font-family: inherit; font-size: 13px; outline: none; width: 200px; }
+  .search-box input:focus { border-color: var(--accent); }
+  .factions-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+  .fade-in { opacity: 0; transform: translateY(20px); transition: opacity 0.5s ease-out, transform 0.5s ease-out; }
+  .fade-in.visible { opacity: 1; transform: translateY(0); }
+  .faction-card {
+    background: var(--bg2); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px;
+    cursor: pointer; transition: all 0.25s; position: relative; overflow: hidden; display: flex; flex-direction: column;
+  }
+  .faction-card:hover { transform: translateY(-5px); border-color: var(--accent); box-shadow: 0 10px 25px var(--shadow); }
+  .faction-img { width: 100%; height: 140px; object-fit: cover; border-radius: 8px; margin-bottom: 15px; background: var(--bg); border: 1px solid var(--line); }
+  .delete-btn {
+    position: absolute; top: 10px; right: 10px; width: 30px; height: 30px; background: rgba(231, 76, 60, 0.9);
+    color: #fff; border: none; border-radius: 50%; font-size: 16px; font-weight: bold; cursor: pointer;
+    display: none; align-items: center; justify-content: center; z-index: 10; transition: all 0.2s; box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+  }
+  .delete-btn:hover { background: #c0392b; transform: scale(1.1); }
+  .edit-btn {
+    position: absolute; top: 10px; right: 50px; width: 30px; height: 30px; background: rgba(241, 196, 15, 0.9);
+    color: #12140c; border: none; border-radius: 50%; font-size: 14px; font-weight: bold; cursor: pointer;
+    display: none; align-items: center; justify-content: center; z-index: 10; transition: all 0.2s; box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+  }
+  .edit-btn:hover { background: #f39c12; transform: scale(1.1); }
+  body.admin-active .delete-btn, body.admin-active .edit-btn { display: flex; }
+  .card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px; }
+  .faction-name { font-family: 'Oswald', sans-serif; font-size: 1.2rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; }
+  .card-badges { display: flex; gap: 6px; flex-wrap: wrap; margin-top: auto; }
+  .badge { font-size: 10px; font-weight: 700; text-transform: uppercase; padding: 3px 8px; border-radius: 4px; display: inline-flex; align-items: center; gap: 4px; }
+  .badge-nato { background: rgba(52, 152, 219, 0.15); color: #5dade2; border: 1px solid rgba(52, 152, 219, 0.3); }
+  .badge-pact { background: rgba(231, 76, 60, 0.15); color: #ec7063; border: 1px solid rgba(231, 76, 60, 0.3); }
+  .badge-ru { background: rgba(241, 196, 15, 0.15); color: #f1c40f; border: 1px solid rgba(241, 196, 15, 0.3); }
+  .badge-en { background: rgba(155, 89, 182, 0.15); color: #af7ac5; border: 1px solid rgba(155, 89, 182, 0.3); }
+  .badge-rating { background: rgba(200, 217, 78, 0.15); color: var(--accent); border: 1px solid rgba(200, 217, 78, 0.3); margin-left: auto; }
+  .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(5px); display: flex; align-items: center; justify-content: center; z-index: 1000; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+  .modal-overlay.active { opacity: 1; pointer-events: auto; }
+  .modal-content { background: var(--bg2); border: 1px solid var(--line); border-radius: var(--radius); width: 100%; max-width: 500px; padding: 30px; position: relative; transform: translateY(20px); transition: transform 0.3s; box-shadow: 0 20px 50px var(--shadow); max-height: 90vh; overflow-y: auto; }
+  .modal-overlay.active .modal-content { transform: translateY(0); }
+  .modal-close { position: absolute; top: 15px; right: 15px; background: transparent; border: none; color: var(--muted); font-size: 24px; cursor: pointer; }
+  .modal-close:hover { color: var(--text); }
+  .modal-img { width: 100%; height: 200px; object-fit: cover; border-radius: 8px; margin-bottom: 20px; border: 1px solid var(--line); }
+  .modal-title { font-family: 'Oswald', sans-serif; font-size: 2rem; text-transform: uppercase; margin-bottom: 15px; }
+  .modal-desc { color: var(--muted); font-size: 14px; margin-bottom: 25px; line-height: 1.6; white-space: pre-wrap; }
+  .modal-actions { display: flex; flex-direction: column; gap: 10px; }
+  .action-btn { display: flex; align-items: center; justify-content: center; gap: 10px; padding: 12px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 14px; transition: all 0.2s; border: 1px solid transparent; }
+  .action-btn-discord { background: #5865F2; color: #fff; }
+  .action-btn-discord:hover { background: #4752c4; }
+  .action-btn-roblox { background: #e2231a; color: #fff; }
+  .action-btn-roblox:hover { background: #b81d16; }
+  .admin-form-group { display: flex; flex-direction: column; gap: 5px; margin-bottom: 15px; }
+  .admin-form-label { font-size: 12px; color: var(--muted); font-weight: 600; text-transform: uppercase; }
+  .admin-form-input, .admin-form-select, .admin-form-textarea { background: var(--bg); border: 1px solid var(--line); color: var(--text); padding: 10px; border-radius: 6px; font-family: inherit; font-size: 14px; outline: none; }
+  .admin-form-input:focus, .admin-form-select:focus, .admin-form-textarea:focus { border-color: var(--accent); }
+  .admin-form-textarea { resize: vertical; min-height: 80px; }
+  .admin-row { display: flex; gap: 15px; }
+  .admin-row > * { flex: 1; }
+  .checkbox-group { display: flex; gap: 15px; background: var(--bg); border: 1px solid var(--line); padding: 10px; border-radius: 6px; }
+  .checkbox-label { display: flex; align-items: center; gap: 6px; font-size: 14px; color: var(--text); cursor: pointer; }
+  .checkbox-label input[type="checkbox"] { accent-color: var(--accent); width: 16px; height: 16px; cursor: pointer; }
+  .file-upload-wrapper { display: flex; gap: 10px; }
+  .file-upload-wrapper input[type="url"] { flex: 1; }
+  .file-upload-btn { background: var(--line); border: 1px solid var(--line); color: var(--text); padding: 0 15px; border-radius: 6px; cursor: pointer; font-weight: 600; display: flex; align-items: center; justify-content: center; }
+  .file-upload-btn:hover { background: var(--muted); color: var(--bg); }
+  .btn-publish { background: var(--accent); color: #12140c; border: none; padding: 12px; border-radius: 8px; font-weight: 700; font-size: 15px; cursor: pointer; width: 100%; margin-top: 10px; transition: all 0.2s; }
+  .btn-publish:hover { background: #d8e96a; }
+  .btn-publish:disabled { opacity: 0.5; cursor: not-allowed; }
+  .toast { position: fixed; bottom: 20px; right: 20px; background: #27ae60; color: #fff; padding: 15px 25px; border-radius: 8px; font-weight: 600; box-shadow: 0 5px 15px rgba(0,0,0,0.5); transform: translateY(100px); opacity: 0; transition: all 0.3s; z-index: 2000; }
+  .toast.show { transform: translateY(0); opacity: 1; }
+  .toast.error { background: #e74c3c; }
+  footer { border-top:1px solid var(--line); background:var(--bg2); padding: 34px 24px; z-index: 1; }
+  .foot-inner{ max-width:1180px; margin:0 auto; display:flex; flex-wrap:wrap; gap:20px; align-items:center; justify-content:space-between; font-size:12.5px; color:var(--muted); }
+  .discord-contact { display: flex; align-items: center; gap: 5px; background: rgba(88, 101, 242, 0.1); padding: 6px 12px; border-radius: 6px; border: 1px solid rgba(88, 101, 242, 0.3); }
+  .discord-link { color: #5865F2; text-decoration: none; font-weight: 700; transition: color 0.2s; }
+  .discord-link:hover { color: #fff; }
+  @media(max-width: 768px) {
+    .search-box { margin-left: 0; width: 100%; }
+    .search-box input { width: 100%; }
+    .filters { flex-direction: column; }
+    .admin-row { flex-direction: column; gap: 5px; }
+    .foot-inner { flex-direction: column; text-align: center; gap: 10px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-left">
+    <a href="index.html" class="back-btn">← <span data-i18n="btn_back">На главную</span></a>
+    <a href="tops.html" class="back-btn" style="color: var(--accent);">🏆 Топы</a>
+    <button class="admin-btn" id="adminToggleBtn">Admin Mode</button>
+  </div>
+  <div class="header-controls">
+    <button class="icon-btn" id="themeToggle">🌓</button>
+    <div class="lang-switch">
+      <button class="lang" data-lang="en">EN</button>
+      <button class="lang" data-lang="ru">RU</button>
+      <button class="lang" data-lang="fr">FR</button>
+      <button class="lang" data-lang="uk">UA</button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <h1 class="page-title" data-i18n="title_1">Factions</h1>
+  <p class="page-sub" data-i18n="title_sub">Список всех фракций.</p>
+
+  <div class="filters">
+    <div class="filter-group">
+      <span class="filter-label">Side:</span>
+      <button class="filter-btn active" data-filter="ALL" data-type="side">🌐 Все</button>
+      <button class="filter-btn" data-filter="NATO" data-type="side"><img src="foto/nato.png" class="flag-icon" onerror="this.src='https://flagcdn.com/us.svg'"> NATO</button>
+      <button class="filter-btn" data-filter="PACT" data-type="side"><img src="foto/pact.png" class="flag-icon" onerror="this.src='https://flagcdn.com/ru.svg'"> PACT</button>
+    </div>
+    <div class="filter-group">
+      <span class="filter-label">Language:</span>
+      <button class="filter-btn active" data-filter="ALL" data-type="lang">🌐 Все</button>
+      <button class="filter-btn" data-filter="RU" data-type="lang"><img src="https://flagcdn.com/ru.svg" class="flag-icon"> RU</button>
+      <button class="filter-btn" data-filter="EN" data-type="lang"><img src="https://flagcdn.com/gb.svg" class="flag-icon"> EN</button>
+    </div>
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder="Поиск...">
+    </div>
+  </div>
+
+  <div class="factions-grid" id="factionsGrid">
+    <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--muted);">Загрузка...</div>
+  </div>
+</main>
+
+<footer>
+  <div class="foot-inner">
+    <span><span class="dot">■</span> Cold War Factions</span>
+    <div class="discord-contact">
+      <span>Проблемы? Пишите в Discord:</span>
+      <a href="https://discordapp.com/users/623589823780749312" target="_blank" class="discord-link">@sirofimo4ka</a>
+    </div>
+  </div>
+</footer>
+
+<div class="modal-overlay" id="factionModal">
+  <div class="modal-content">
+    <button class="modal-close" id="closeModal">✕</button>
+    <img src="" id="mImage" class="modal-img" style="display:none;">
+    <div class="modal-title" id="mName"></div>
+    <div class="modal-desc" id="mDesc"></div>
+    <div class="modal-actions">
+      <a href="#" id="mDiscord" class="action-btn action-btn-discord" target="_blank">Discord</a>
+      <a href="#" id="mRoblox" class="action-btn action-btn-roblox" target="_blank">Roblox</a>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="adminModal">
+  <div class="modal-content">
+    <button class="modal-close" id="closeAdminModal">✕</button>
+    <div class="modal-title" style="color:var(--accent);" id="adminModalTitle">Добавить фракцию</div>
+    
+    <div id="adminUserBar" style="display:none; align-items:center; justify-content:space-between; background:rgba(88,101,242,.1); padding:10px; margin-bottom:15px; border-radius:6px;">
+      <span>👤 <b id="adminUserName">—</b></span>
+      <button class="admin-btn" style="color:#e74c3c; border-color:#e74c3c;" onclick="discordLogout()">Выйти</button>
+    </div>
+    
+    <form id="addFactionForm">
+      <div class="admin-row">
+        <div class="admin-form-group">
+          <label class="admin-form-label">Название</label>
+          <input type="text" class="admin-form-input" id="aName" required>
+        </div>
+        <div class="admin-form-group" style="max-width:100px;">
+          <label class="admin-form-label">Очки</label>
+          <input type="number" class="admin-form-input" id="aRating" value="0" required>
+        </div>
+      </div>
+      <div class="admin-row">
+        <div class="admin-form-group">
+          <label class="admin-form-label">Сторона</label>
+          <select class="admin-form-select" id="aSide">
+            <option value="NATO">NATO</option>
+            <option value="PACT">PACT</option>
+          </select>
+        </div>
+        <div class="admin-form-group">
+          <label class="admin-form-label">Языки</label>
+          <div class="checkbox-group">
+            <label class="checkbox-label"><input type="checkbox" id="aLangEN" value="EN" checked> EN</label>
+            <label class="checkbox-label"><input type="checkbox" id="aLangRU" value="RU"> RU</label>
+          </div>
+        </div>
+      </div>
+      <div class="admin-form-group">
+        <label class="admin-form-label">Фото (URL или файл)</label>
+        <div class="file-upload-wrapper">
+          <input type="url" class="admin-form-input" id="aImageUrl" placeholder="https://...">
+          <button type="button" class="file-upload-btn" onclick="document.getElementById('aImageFile').click()">📂 Файл</button>
+          <input type="file" id="aImageFile" accept="image/*" style="display:none;">
+        </div>
+      </div>
+      <div class="admin-form-group">
+        <label class="admin-form-label">Discord</label>
+        <input type="url" class="admin-form-input" id="aDiscord" placeholder="https://discord.gg/...">
+      </div>
+      <div class="admin-form-group">
+        <label class="admin-form-label">Roblox</label>
+        <input type="url" class="admin-form-input" id="aRoblox" placeholder="https://www.roblox.com/groups/...">
+      </div>
+      <div class="admin-form-group">
+        <label class="admin-form-label">Описание (авто-перевод)</label>
+        <textarea class="admin-form-textarea" id="aDesc" required></textarea>
+      </div>
+      <button type="submit" class="btn-publish" id="publishBtn">Сохранить</button>
+    </form>
+
+    <div style="margin-top: 20px; padding-top: 20px; border-top: 1px dashed var(--line);">
+      <p style="font-size: 11px; color: var(--muted); margin-bottom: 10px; text-align: center;">Управление файлом БД (factions.json)</p>
+      <div style="display: flex; gap: 10px;">
+        <button class="admin-btn" style="flex:1; border-color: #27ae60; color: #27ae60;" onclick="exportDB()">⬇️ Скачать БД</button>
+        <button class="admin-btn" style="flex:1; border-color: #e67e22; color: #e67e22;" onclick="document.getElementById('importFile').click()">⬆️ Загрузить БД</button>
+        <input type="file" id="importFile" accept=".json" style="display:none" onchange="importDB(event)">
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast">Готово!</div>
+
+<script>
+// --- НАСТРОЙКИ DISCORD ---
+const DISCORD_AUTH = {
+  clientId: "ВАШ_DISCORD_CLIENT_ID",
+  redirectUri: location.origin + location.pathname,
+  adminIds: ["623589823780749312"]
+};
+
+// --- ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ ---
+let factionsData = [];
+let isAdmin = false;
+let editingFactionId = null;
+let currentSide = 'ALL', currentLang = 'ALL', searchQuery = '';
+let currentLangCode = 'en';
+
+const grid = document.getElementById('factionsGrid');
+const modal = document.getElementById('factionModal');
+const adminModal = document.getElementById('adminModal');
+const adminToggleBtn = document.getElementById('adminToggleBtn');
+
+// --- ЗАГРУЗКА JSON (LocalStorage или файл) ---
+async function initDB() {
+  const localDB = localStorage.getItem('cw_local_db');
+  if (localDB) {
+    try {
+      factionsData = JSON.parse(localDB);
+      renderFactions();
+      return;
+    } catch(e) {}
+  }
+
+  try {
+    const res = await fetch('factions.json?t=' + Date.now());
+    if (res.ok) {
+      factionsData = await res.json();
+      renderFactions();
+      return;
+    }
+  } catch(e) {}
+  
+  factionsData = [];
+  renderFactions();
+}
+
+function saveToLocal() {
+  localStorage.setItem('cw_local_db', JSON.stringify(factionsData));
+}
+
+// --- СКАЧИВАНИЕ И ЗАГРУЗКА JSON ---
+function exportDB() {
+  const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(factionsData, null, 2));
+  const a = document.createElement('a');
+  a.href = dataStr;
+  a.download = "factions.json";
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  showToast("Файл БД скачан!");
+}
+
+function importDB(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    try {
+      const imported = JSON.parse(e.target.result);
+      if (Array.isArray(imported)) {
+        factionsData = imported;
+        saveToLocal();
+        renderFactions();
+        showToast("БД загружена локально!");
+      }
+    } catch (err) { showToast("Ошибка чтения файла", true); }
+  };
+  reader.readAsText(file);
+  event.target.value = '';
+}
+
+// --- ОТРИСОВКА ---
+function renderFactions() {
+  grid.innerHTML = '';
+  const filtered = factionsData.filter(f => {
+    const factionLangs = Array.isArray(f.lang) ? f.lang : [f.lang];
+    const matchSide = currentSide === 'ALL' || f.side === currentSide;
+    const matchLang = currentLang === 'ALL' || factionLangs.includes(currentLang);
+    const matchSearch = f.name.toLowerCase().includes(searchQuery);
+    return matchSide && matchLang && matchSearch;
+  });
+
+  if (filtered.length === 0) {
+    grid.innerHTML = '<div style="grid-column:1/-1; text-align:center; padding:20px; color:var(--muted);">Ничего не найдено</div>';
+    return;
+  }
+
+  filtered.forEach(f => {
+    const card = document.createElement('div');
+    card.className = 'faction-card fade-in visible';
+    card.onclick = () => openModal(f.id);
+
+    const sideText = f.side === 'NATO' 
+      ? '<img src="foto/nato.png" class="flag-icon" onerror="this.src=\'https://flagcdn.com/us.svg\'"> NATO' 
+      : '<img src="foto/pact.png" class="flag-icon" onerror="this.src=\'https://flagcdn.com/ru.svg\'"> PACT';
+    
+    let langBadges = '';
+    const factionLangs = Array.isArray(f.lang) ? f.lang : [f.lang];
+    factionLangs.forEach(l => {
+      if (l === 'RU') langBadges += `<span class="badge badge-ru">RU</span>`;
+      if (l === 'EN') langBadges += `<span class="badge badge-en">EN</span>`;
+    });
+
+    card.innerHTML = `
+      <button class="delete-btn" onclick="deleteFaction(event, '${f.id}')">✕</button>
+      <button class="edit-btn" onclick="openEditFaction(event, '${f.id}')">✏️</button>
+      <img src="${f.image || 'https://via.placeholder.com/400x140?text=No+Image'}" class="faction-img">
+      <div class="card-header"><div class="faction-name">${f.name}</div></div>
+      <div class="card-badges">
+        <span class="badge ${f.side === 'NATO' ? 'badge-nato' : 'badge-pact'}">${sideText}</span>
+        ${langBadges}
+        <span class="badge badge-rating">🏆 ${f.rating || 0}</span>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+// --- ДОБАВЛЕНИЕ / РЕДАКТИРОВАНИЕ ---
+document.getElementById('addFactionForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  if (!isAdmin) return;
+
+  const publishBtn = document.getElementById('publishBtn');
+  publishBtn.disabled = true;
+  publishBtn.textContent = "Перевод и сохранение...";
+
+  const name = document.getElementById('aName').value.trim();
+  const side = document.getElementById('aSide').value;
+  const image = document.getElementById('aImageUrl').value.trim();
+  const discord = document.getElementById('aDiscord').value.trim();
+  const roblox = document.getElementById('aRoblox').value.trim();
+  const descText = document.getElementById('aDesc').value.trim();
+  const rating = parseInt(document.getElementById('aRating').value) || 0;
+  
+  const selectedLangs = [];
+  if (document.getElementById('aLangEN').checked) selectedLangs.push('EN');
+  if (document.getElementById('aLangRU').checked) selectedLangs.push('RU');
+
+  const descObj = { [currentLangCode]: descText };
+  const langsToTranslate = ['en', 'ru', 'fr', 'uk'].filter(l => l !== currentLangCode);
+  
+  await Promise.all(langsToTranslate.map(async (target) => {
+    descObj[target] = await translateText(descText, currentLangCode, target);
+  }));
+
+  if (editingFactionId) {
+    const idx = factionsData.findIndex(f => f.id === editingFactionId);
+    if (idx !== -1) {
+      factionsData[idx] = { ...factionsData[idx], name, side, lang: selectedLangs, image, discord, roblox, rating, desc: descObj };
+    }
+  } else {
+    factionsData.push({
+      id: "f_" + Date.now(), name, side, lang: selectedLangs, image, discord, roblox, rating, desc: descObj
+    });
+  }
+
+  saveToLocal();
+  
+  adminModal.classList.remove('active');
+  editingFactionId = null;
+  document.getElementById('addFactionForm').reset();
+  renderFactions();
+  
+  publishBtn.disabled = false;
+  publishBtn.textContent = "Сохранить";
+  showToast("Добавлено локально! Скачайте БД и закиньте на GitHub.");
+});
+
+// --- ВСПОМОГАТЕЛЬНЫЕ ---
+function deleteFaction(e, id) {
+  e.stopPropagation();
+  if (!isAdmin || !confirm("Удалить фракцию?")) return;
+  factionsData = factionsData.filter(f => f.id !== id);
+  saveToLocal();
+  renderFactions();
+  showToast("Удалено локально! Не забудьте скачать БД.");
+}
+
+function openModal(id) {
+  const f = factionsData.find(x => x.id === id);
+  if (!f) return;
+  document.getElementById('mImage').src = f.image || '';
+  document.getElementById('mImage').style.display = f.image ? 'block' : 'none';
+  document.getElementById('mName').textContent = f.name;
+  document.getElementById('mDesc').textContent = f.desc[currentLangCode] || f.desc['en'];
+  document.getElementById('mDiscord').href = f.discord || '#';
+  document.getElementById('mDiscord').style.display = f.discord ? 'flex' : 'none';
+  document.getElementById('mRoblox').href = f.roblox || '#';
+  document.getElementById('mRoblox').style.display = f.roblox ? 'flex' : 'none';
+  modal.classList.add('active');
+}
+
+function openEditFaction(e, id) {
+  e.stopPropagation();
+  if (!isAdmin) return;
+  const f = factionsData.find(x => x.id === id);
+  if (!f) return;
+
+  editingFactionId = f.id;
+  document.getElementById('aName').value = f.name;
+  document.getElementById('aSide').value = f.side;
+  document.getElementById('aImageUrl').value = f.image || '';
+  document.getElementById('aDiscord').value = f.discord || '';
+  document.getElementById('aRoblox').value = f.roblox || '';
+  document.getElementById('aRating').value = f.rating || 0;
+  document.getElementById('aDesc').value = f.desc[currentLangCode] || f.desc['en'];
+  
+  const factionLangs = Array.isArray(f.lang) ? f.lang : [f.lang];
+  document.getElementById('aLangEN').checked = factionLangs.includes('EN');
+  document.getElementById('aLangRU').checked = factionLangs.includes('RU');
+  
+  document.getElementById('adminModalTitle').textContent = "Редактировать";
+  adminModal.classList.add('active');
+}
+
+async function translateText(text, from, to) {
+  if (from === to || !text) return text;
+  try {
+    const chunks = [];
+    let current = "";
+    text.split(" ").forEach(w => {
+      if ((current + w).length > 400) { chunks.push(current.trim()); current = w + " "; } 
+      else { current += w + " "; }
+    });
+    if (current.trim()) chunks.push(current.trim());
+
+    const translated = await Promise.all(chunks.map(async (chunk) => {
+      const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(chunk)}&langpair=${from}|${to}`;
+      const res = await fetch(url);
+      const data = await res.json();
+      return (data.responseData && data.responseData.translatedText) ? data.responseData.translatedText : chunk;
+    }));
+    return translated.join(" ");
+  } catch(e) { return text; }
+}
+
+function showToast(msg, isError = false) {
+  const toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.className = 'toast show' + (isError ? ' error' : '');
+  setTimeout(() => toast.classList.remove('show'), 3000);
+}
+
+// --- DISCORD ВХОД ---
+function b64url(bytes) { return btoa(String.fromCharCode(...bytes)).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, ""); }
+async function startDiscordLogin() {
+  const verifier = b64url(crypto.getRandomValues(new Uint8Array(32)));
+  const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(verifier));
+  sessionStorage.setItem("cw_dc_verifier", verifier);
+  const params = new URLSearchParams({
+    client_id: DISCORD_AUTH.clientId, response_type: "code", scope: "identify",
+    redirect_uri: DISCORD_AUTH.redirectUri, code_challenge: b64url(new Uint8Array(digest)), code_challenge_method: "S256"
+  });
+  location.href = "https://discord.com/oauth2/authorize?" + params.toString();
+}
+async function handleDiscordRedirect() {
+  const url = new URL(location.href);
+  const code = url.searchParams.get("code");
+  if (!code) return;
+  history.replaceState({}, document.title, url.pathname);
+  const verifier = sessionStorage.getItem("cw_dc_verifier");
+  sessionStorage.removeItem("cw_dc_verifier");
+  try {
+    const tokenRes = await fetch("https://discord.com/api/oauth2/token", {
+      method: "POST", headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: new URLSearchParams({ client_id: DISCORD_AUTH.clientId, grant_type: "authorization_code", code, redirect_uri: DISCORD_AUTH.redirectUri, code_verifier: verifier })
+    });
+    const token = await tokenRes.json();
+    const userRes = await fetch("https://discord.com/api/users/@me", { headers: { Authorization: "Bearer " + token.access_token } });
+    const user = await userRes.json();
+    if (DISCORD_AUTH.adminIds.includes(user.id)) {
+      isAdmin = true; document.body.classList.add("admin-active");
+      adminToggleBtn.classList.add("active"); adminToggleBtn.textContent = "⚙️ Админ";
+      document.getElementById('adminUserBar').style.display = 'flex';
+      document.getElementById('adminUserName').textContent = user.username;
+      adminModal.classList.add('active');
+    }
+  } catch (e) { console.error(e); }
+}
+adminToggleBtn.addEventListener("click", () => { isAdmin ? adminModal.classList.add('active') : startDiscordLogin(); });
+function discordLogout() {
+  isAdmin = false; document.body.classList.remove("admin-active");
+  adminToggleBtn.classList.remove("active"); adminToggleBtn.textContent = "Admin Mode";
+  document.getElementById('adminUserBar').style.display = 'none';
+  adminModal.classList.remove('active');
+}
+
+// --- ИНИЦИАЛИЗАЦИЯ ---
+document.getElementById('themeToggle').addEventListener('click', () => {
+  document.body.classList.toggle('light-theme');
+  localStorage.setItem('cw-theme', document.body.classList.contains('light-theme') ? 'light' : 'dark');
+});
+if (localStorage.getItem('cw-theme') === 'light') document.body.classList.add('light-theme');
+
+document.getElementById('closeModal').onclick = () => modal.classList.remove('active');
+document.getElementById('closeAdminModal').onclick = () => adminModal.classList.remove('active');
+document.getElementById('searchInput').addEventListener('input', (e) => {
+  searchQuery = e.target.value.toLowerCase();
+  renderFactions();
+});
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const type = btn.dataset.type;
+    document.querySelectorAll(`.filter-btn[data-type="${type}"]`).forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    if (type === 'side') currentSide = btn.dataset.filter;
+    if (type === 'lang') currentLang = btn.dataset.filter;
+    renderFactions();
+  });
+});
+
+// Запуск
+initDB();
+handleDiscordRedirect();
+</script>
+</body>
+</html>

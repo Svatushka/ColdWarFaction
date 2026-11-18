@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cold War Factions — Roblox Faction Hub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0e100c;
+    --bg2:#151a11;
+    --line:#2b3323;
+    --accent:#c8d94e;
+    --accent2:#e0b45c;
+    --text:#e9ebda;
+    --muted:#98a08a;
+    --radius:14px;
+    --shadow: rgba(0,0,0,0.45);
+  }
+
+  /* СВЕТЛАЯ ТЕМА */
+  body.light-theme {
+    --bg:#f4f6f0;
+    --bg2:#ffffff;
+    --line:#d0d6c5;
+    --accent:#9abf2b;
+    --accent2:#d49b3b;
+    --text:#1a1e16;
+    --muted:#5c6654;
+    --shadow: rgba(0,0,0,0.1);
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+
+  body{
+    font-family:'Inter',system-ui,-apple-system,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+    transition: background-color 0.3s, color 0.3s;
+  }
+
+  body::before{
+    content:'';
+    position:fixed;
+    inset:0;
+    background-image:
+      linear-gradient(rgba(200,217,78,.045) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(200,217,78,.045) 1px, transparent 1px);
+    background-size:52px 52px;
+    pointer-events:none;
+    z-index:0;
+    transition: opacity 0.3s;
+  }
+  body.light-theme::before { opacity: 0.3; }
+
+  body::after{
+    content:'';
+    position:fixed;
+    inset:0;
+    background:radial-gradient(ellipse at 50% 0%, rgba(200,217,78,.10), transparent 60%);
+    pointer-events:none;
+    z-index:0;
+  }
+
+  header,main,footer{position:relative;z-index:1}
+
+  header{
+    position:sticky;
+    top:0;
+    z-index:50;
+    backdrop-filter:blur(14px);
+    -webkit-backdrop-filter:blur(14px);
+    background:rgba(14,16,12,.82);
+    border-bottom:1px solid var(--line);
+    transition: background-color 0.3s;
+  }
+  body.light-theme header { background:rgba(255,255,255,.85); }
+
+  .nav{
+    max-width:1180px;
+    margin:0 auto;
+    padding:14px 24px;
+    display:flex;
+    align-items:center;
+    gap:24px;
+  }
+
+  .brand{
+    display:flex;
+    align-items:center;
+    gap:11px;
+    text-decoration:none;
+    color:var(--text);
+    flex-shrink:0;
+  }
+
+  .brand-badge{
+    width:38px;height:38px;
+    display:grid;place-items:center;
+    border:2px solid var(--accent);
+    border-radius:9px;
+    font-family:'Oswald',sans-serif;
+    font-weight:700;
+    font-size:14px;
+    letter-spacing:.5px;
+    color:var(--accent);
+    box-shadow:0 0 18px rgba(200,217,78,.22);
+  }
+
+  .brand-text{
+    font-family:'Oswald',sans-serif;
+    font-weight:600;
+    font-size:17px;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    line-height:1.1;
+  }
+  .brand-text small{
+    display:block;
+    font-family:'Inter',sans-serif;
+    font-size:10px;
+    font-weight:500;
+    letter-spacing:.22em;
+    color:var(--muted);
+    text-transform:uppercase;
+  }
+
+  .nav-links{
+    display:flex;
+    gap:26px;
+    margin-left:auto;
+    list-style:none;
+  }
+
+  .nav-links a{
+    color:var(--muted);
+    text-decoration:none;
+    font-size:14px;
+    font-weight:500;
+    letter-spacing:.03em;
+    transition:color .2s;
+  }
+  .nav-links a:hover{color:var(--accent)}
+  .nav-links a.active{color:var(--accent)}
+
+  .header-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .icon-btn {
+    background: transparent;
+    border: 1px solid var(--line);
+    color: var(--text);
+    width: 34px;
+    height: 34px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.2s;
+  }
+  .icon-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+  .lang-switch{
+    display:flex;
+    gap:6px;
+    padding:5px;
+    border:1px solid var(--line);
+    border-radius:10px;
+    background:rgba(255,255,255,.02);
+  }
+
+  .lang{
+    border:0;
+    background:transparent;
+    color:var(--muted);
+    font-family:'Inter',sans-serif;
+    font-size:12px;
+    font-weight:600;
+    letter-spacing:.08em;
+    padding:6px 9px;
+    border-radius:6px;
+    cursor:pointer;
+    transition:all .18s;
+  }
+  .lang:hover{color:var(--text);background:rgba(255,255,255,.05)}
+  .lang.active{ background:var(--accent); color:#12140c; }
+
+  .hero{
+    max-width:1180px;
+    margin:0 auto;
+    padding:96px 24px 72px;
+  }
+
+  .tag{
+    display:inline-flex;
+    align-items:center;
+    gap:9px;
+    font-size:11px;
+    font-weight:600;
+    letter-spacing:.2em;
+    text-transform:uppercase;
+    color:var(--accent);
+    border:1px solid rgba(200,217,78,.35);
+    background:rgba(200,217,78,.07);
+    padding:7px 14px;
+    border-radius:100px;
+    margin-bottom:28px;
+  }
+  .tag::before{
+    content:'';
+    width:7px;height:7px;
+    border-radius:50%;
+    background:var(--accent);
+    box-shadow:0 0 10px var(--accent);
+    animation:pulse 2s infinite;
+  }
+  @keyframes pulse{ 0%,100%{opacity:1} 50%{opacity:.25} }
+
+  .hero h1{
+    font-family:'Oswald',sans-serif;
+    font-weight:700;
+    font-size:clamp(2.6rem,7vw,5rem);
+    line-height:1.02;
+    letter-spacing:.02em;
+    text-transform:uppercase;
+    margin-bottom:20px;
+  }
+  .hero h1 span{color:var(--accent)}
+
+  .hero .sub{
+    font-size:clamp(1rem,2vw,1.22rem);
+    color:var(--accent2);
+    font-weight:600;
+    margin-bottom:16px;
+    max-width:720px;
+  }
+
+  .hero .desc{
+    font-size:clamp(.95rem,1.6vw,1.08rem);
+    color:var(--muted);
+    max-width:660px;
+    margin-bottom:36px;
+  }
+
+  .actions{display:flex;flex-wrap:wrap;gap:14px}
+
+  .btn{
+    display:inline-block;
+    padding:14px 28px;
+    border-radius:10px;
+    font-size:14px;
+    font-weight:600;
+    letter-spacing:.04em;
+    text-decoration:none;
+    cursor:pointer;
+    border:1px solid transparent;
+    transition:all .2s;
+  }
+  .btn-primary{ background:var(--accent); color:#12140c; }
+  .btn-primary:hover{ background:#d8e96a; transform:translateY(-2px); box-shadow:0 10px 26px rgba(200,217,78,.28); }
+  .btn-ghost{ border-color:var(--line); color:var(--text); background:rgba(255,255,255,.02); }
+  .btn-ghost:hover{ border-color:var(--accent); color:var(--accent); transform:translateY(-2px); }
+
+  .stats-wrapper {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 0 24px 80px;
+  }
+
+  .stats{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:1px;
+    background:var(--line);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    overflow:hidden;
+  }
+
+  .stat{ 
+    background:var(--bg2); 
+    padding:26px 20px; 
+    text-align:center; 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s;
+  }
+  .stat b{ 
+    display:block; 
+    font-family:'Oswald',sans-serif; 
+    font-size:2rem; 
+    font-weight:700; 
+    color:var(--accent); 
+    line-height:1.1; 
+    margin-bottom: 4px;
+  }
+  .stat span{ 
+    font-size:11.5px; 
+    letter-spacing:.14em; 
+    text-transform:uppercase; 
+    color:var(--muted); 
+    white-space: nowrap;
+  }
+
+  section.block{ max-width:1180px; margin:0 auto; padding:0 24px 84px; }
+
+  .section-title{
+    font-family:'Oswald',sans-serif;
+    font-weight:600;
+    font-size:clamp(1.5rem,3.5vw,2.1rem);
+    text-transform:uppercase;
+    letter-spacing:.05em;
+    margin-bottom:14px;
+  }
+  .section-title::after{
+    content:'';
+    display:block;
+    width:52px;
+    height:3px;
+    background:var(--accent);
+    margin-top:14px;
+    border-radius:2px;
+  }
+
+  .about-text{ color:var(--muted); font-size:1.02rem; max-width:860px; margin-top:22px; }
+
+  .cards{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:18px;
+    margin-top:38px;
+  }
+
+  /* АНИМАЦИЯ ПОЯВЛЕНИЯ */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+  }
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .card{
+    background:var(--bg2);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:26px 24px;
+    transition:all .25s;
+    position:relative;
+    overflow:hidden;
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    color: var(--text);
+  }
+  .card::before{
+    content:'';
+    position:absolute;
+    top:0;left:0;
+    width:100%;height:2px;
+    background:linear-gradient(90deg,var(--accent),transparent);
+    opacity:0;
+    transition:opacity .25s;
+  }
+  .card:hover{ 
+    transform:translateY(-4px); 
+    border-color:rgba(200,217,78,.45); 
+    box-shadow:0 16px 38px var(--shadow); 
+  }
+  .card:hover::before{opacity:1}
+
+  .card .icon{ 
+    font-family:'Oswald',sans-serif; 
+    font-size:13px; 
+    font-weight:700; 
+    letter-spacing:.14em; 
+    color:var(--accent); 
+    margin-bottom:14px; 
+    opacity:.85; 
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .card .icon span { font-size: 20px; opacity: 0.5; }
+  
+  .card h3{ 
+    font-family:'Oswald',sans-serif; 
+    font-size:1.12rem; 
+    font-weight:600; 
+    letter-spacing:.03em; 
+    text-transform:uppercase; 
+    margin-bottom:9px; 
+    min-height: 2.4em; 
+    display: flex;
+    align-items: flex-start;
+  }
+  .card p{ 
+    font-size:.93rem; 
+    color:var(--muted); 
+    flex-grow: 1; 
+  }
+
+  footer{ border-top:1px solid var(--line); background:var(--bg2); padding:34px 24px; transition: background-color 0.3s; }
+  .foot-inner{
+    max-width:1180px;
+    margin:0 auto;
+    display:flex;
+    flex-wrap:wrap;
+    gap:20px;
+    align-items:center;
+    justify-content:space-between;
+    font-size:12.5px;
+    color:var(--muted);
+  }
+  .foot-inner .dot{color:var(--accent)}
+  
+  .discord-contact {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background: rgba(88, 101, 242, 0.1);
+    padding: 6px 12px;
+    border-radius: 6px;
+    border: 1px solid rgba(88, 101, 242, 0.3);
+  }
+  .discord-link {
+    color: #5865F2;
+    text-decoration: none;
+    font-weight: 700;
+    transition: color 0.2s;
+  }
+  .discord-link:hover {
+    color: #fff;
+  }
+
+  @media(max-width:820px){
+    .nav-links{display:none}
+    .lang-switch{margin-left:auto}
+    .hero{padding:64px 20px 52px}
+  }
+  @media(max-width:420px){
+    .lang{font-size:11px;padding:5px 6px}
+    .brand-text{font-size:14px}
+    .stat span { font-size: 10px; }
+    .foot-inner { flex-direction: column; text-align: center; gap: 10px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="nav">
+    <a href="index.html" class="brand">
+      <div class="brand-badge">CW</div>
+      <div class="brand-text">
+        Cold War Factions
+        <small data-i18n="brand_sub">Roblox Faction Hub</small>
+      </div>
+    </a>
+
+    <ul class="nav-links">
+      <li><a href="index.html" class="active" data-i18n="nav_home">Home</a></li>
+      <li><a href="factions.html" data-i18n="nav_factions">Factions</a></li>
+      <li><a href="tournaments.html" data-i18n="nav_tours">Tournaments</a></li>
+      <li><a href="#about" data-i18n="nav_about">About</a></li>
+      <li><a href="map.html" data-i18n="nav_map">Tactical Map</a></li>
+    </ul>
+
+    <div class="header-controls">
+      <button class="icon-btn" id="themeToggle" title="Toggle Theme">🌓</button>
+      <div class="lang-switch">
+        <button class="lang" data-lang="en">EN</button>
+        <button class="lang" data-lang="ru">RU</button>
+        <button class="lang" data-lang="fr">FR</button>
+        <button class="lang" data-lang="uk">UA</button>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <section class="hero" id="home">
+    <div class="tag" data-i18n="hero_tag">Faction Community · Cold War Roblox</div>
+    <h1><span data-i18n="hero_title_1">Cold War</span> <span data-i18n="hero_title_2">Factions</span></h1>
+    <p class="sub" data-i18n="hero_sub">The hub for factions of Cold War on Roblox</p>
+    <p class="desc" data-i18n="hero_text">
+      Your central portal for everything about factions in the Cold War Roblox place — faction directories, wars, recruitment and community.
+    </p>
+    <div class="actions">
+      <a href="https://www.roblox.com/games/13687899540/Cold-War" target="_blank" class="btn btn-primary" data-i18n="btn_roblox_game">Play on Roblox</a>
+      <a href="map.html" class="btn btn-ghost" data-i18n="btn_map">Open Tactical Map</a>
+    </div>
+  </section>
+
+  <div class="stats-wrapper">
+    <div class="stats">
+      <div class="stat">
+        <b id="stat-factions-count">0</b>
+        <span data-i18n="stat_1">Factions</span>
+      </div>
+      <div class="stat">
+        <b>6</b>
+        <span data-i18n="stat_2">Maps</span>
+      </div>
+      <div class="stat">
+        <b>24/7</b>
+        <span data-i18n="stat_3">Updates</span>
+      </div>
+    </div>
+  </div>
+
+  <section class="block" id="about">
+    <h2 class="section-title" data-i18n="about_title">What is this site for?</h2>
+    <p class="about-text" data-i18n="about_text">
+      This site is a community hub dedicated to factions in the Roblox place Cold War. It gathers information about factions,
+      their recruitment, faction wars and tournaments in one place. Here you can find a faction to join or recruit new members,
+      read beginner-friendly guides, follow patch notes and updates, and connect with other faction leaders and players.
+      Our goal is to help factions grow, organize matches faster, and make the Cold War faction scene more active and visible.
+    </p>
+  </section>
+
+  <section class="block" id="features">
+    <h2 class="section-title" data-i18n="features_title">What you'll find here</h2>
+    <div class="cards">
+      
+      <a href="factions.html" class="card fade-in">
+        <div class="icon">01 <span>📁</span></div>
+        <h3 data-i18n="f1_title">Faction Directory</h3>
+        <p data-i18n="f1_text">A list of active factions in Cold War with their leaders, sizes and contacts.</p>
+      </a>
+
+      <a href="tournaments.html" class="card fade-in">
+        <div class="icon">02 <span>⚔️</span></div>
+        <h3 data-i18n="f2_title">Wars &amp; Tournaments</h3>
+        <p data-i18n="f2_text">Announcements of faction wars, brackets and results of tournaments.</p>
+      </a>
+
+      <div class="card fade-in">
+        <div class="icon">03 <span>📝</span></div>
+        <h3 data-i18n="f3_title">Recruitment</h3>
+        <p data-i18n="f3_text">Faction recruitment posts and a place to apply to join a faction.</p>
+      </div>
+
+      <a href="map.html" class="card fade-in">
+        <div class="icon">04 <span>🗺️</span></div>
+        <h3 data-i18n="f4_title">Tactical Map</h3>
+        <p data-i18n="f4_text">Draw, mark and plan your strategies directly on game maps.</p>
+      </a>
+
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="foot-inner">
+    <span><span class="dot">■</span> <span data-i18n="footer_left">Cold War Factions — a fan-made community project for factions.</span></span>
+    
+    <div class="discord-contact">
+      <span data-i18n="footer_contact">Any issues? Write to Discord:</span>
+      <a href="https://discordapp.com/users/623589823780749312" target="_blank" class="discord-link">@sirofimo4ka</a>
+    </div>
+
+    <span data-i18n="footer_right">Not affiliated with Roblox Corporation.</span>
+  </div>
+</footer>
+
+<script>
+// --- СИСТЕМА ТЕМ ---
+const themeToggle = document.getElementById('themeToggle');
+if (localStorage.getItem('cw-theme') === 'light') {
+  document.body.classList.add('light-theme');
+}
+themeToggle.addEventListener('click', () => {
+  document.body.classList.toggle('light-theme');
+  localStorage.setItem('cw-theme', document.body.classList.contains('light-theme') ? 'light' : 'dark');
+});
+
+// --- АНИМАЦИЯ ПРОКРУТКИ ---
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+
+// --- ПЕРЕВОДЫ ---
+const translations = {
+  en: {
+    page_title: "Cold War Factions — Roblox Faction Hub",
+    brand_sub: "Roblox Faction Hub", nav_home: "Home", nav_factions: "Factions", nav_tours: "Tournaments", nav_about: "About", nav_map: "Tactical Map",
+    hero_tag: "Faction Community · Cold War Roblox", hero_title_1: "Cold War", hero_title_2: "Factions",
+    hero_sub: "The hub for factions of Cold War on Roblox",
+    hero_text: "Your central portal for everything about factions in the Cold War Roblox place — faction directories, wars, recruitment and community.",
+    btn_roblox_game: "Play on Roblox", btn_map: "Open Tactical Map",
+    stat_1: "Factions", stat_2: "Maps", stat_3: "Updates",
+    about_title: "What is this site for?",
+    about_text: "This site is a community hub dedicated to factions in the Roblox place Cold War. It gathers information about factions, their recruitment, faction wars and tournaments in one place. Here you can find a faction to join or recruit new members, read beginner-friendly guides, follow patch notes and updates, and connect with other faction leaders and players. Our goal is to help factions grow, organize matches faster, and make the Cold War faction scene more active and visible.",
+    features_title: "What you'll find here",
+    f1_title: "Faction Directory", f1_text: "A list of active factions in Cold War with their leaders, sizes and contacts.",
+    f2_title: "Wars & Tournaments", f2_text: "Announcements of faction wars, brackets and results of tournaments.",
+    f3_title: "Recruitment", f3_text: "Faction recruitment posts and a place to apply to join a faction.",
+    f4_title: "Tactical Map", f4_text: "Draw, mark and plan your strategies directly on game maps.",
+    footer_left: "Cold War Factions — a fan-made community project for factions.", 
+    footer_contact: "Any issues? Write to Discord:",
+    footer_right: "Not affiliated with Roblox Corporation."
+  },
+  ru: {
+    page_title: "Cold War Factions — хаб фракций Roblox",
+    brand_sub: "Хаб фракций Roblox", nav_home: "Главная", nav_factions: "Фракции", nav_tours: "Турниры", nav_about: "О сайте", nav_map: "Тактическая карта",
+    hero_tag: "Фракции · Cold War Roblox", hero_title_1: "Cold War", hero_title_2: "Factions",
+    hero_sub: "Хаб для фракций Cold War в Roblox",
+    hero_text: "Ваш центральный портал по всему, что связано с фракциями в плейсе Cold War в Roblox — каталог фракций, войны, набор и сообщество.",
+    btn_roblox_game: "Играть в Roblox", btn_map: "Открыть карту",
+    stat_1: "Фракции", stat_2: "Карты", stat_3: "Обновления",
+    about_title: "Для чего этот сайт?",
+    about_text: "Этот сайт — сообщественный хаб, посвящённый фракциям в плейсе Cold War в Roblox. Здесь собрана информация о фракциях, их наборе, фракционных войнах и турнирах в одном месте. Вы можете найти фракцию, чтобы вступить, или набрать новых участников, читать гайды для новичков, следить за патчноутами и обновлениями, а также общаться с другими лидерами фракций и игроками. Наша цель — помочь фракциям расти, быстрее организовывать матчи и сделать фракционную сцену Cold War более активной и заметной.",
+    features_title: "Что здесь есть",
+    f1_title: "Каталог фракций", f1_text: "Список активных фракций Cold War с лидерами, размерами и контактами.",
+    f2_title: "Турниры и войны", f2_text: "Анонсы фракционных войн, сетки и результаты турниров.",
+    f3_title: "Набор игроков", f3_text: "Посты о наборе во фракции и место, чтобы подать заявку на вступление.",
+    f4_title: "Тактическая карта", f4_text: "Рисуйте, отмечайте и планируйте стратегии прямо на игровых картах.",
+    footer_left: "Cold War Factions — фанатский сообщественный проект для фракций.", 
+    footer_contact: "Проблемы или предложения? Пишите в Discord:",
+    footer_right: "Не связан с Roblox Corporation."
+  },
+  fr: {
+    page_title: "Cold War Factions — Hub des factions Roblox",
+    brand_sub: "Hub des factions Roblox", nav_home: "Accueil", nav_factions: "Factions", nav_tours: "Tournois", nav_about: "À propos", nav_map: "Carte Tactique",
+    hero_tag: "Factions · Cold War Roblox", hero_title_1: "Cold War", hero_title_2: "Factions",
+    hero_sub: "Le hub pour les factions de Cold War sur Roblox",
+    hero_text: "Votre portail central pour tout ce qui concerne les factions dans le jeu Cold War sur Roblox — annuaire des factions, guerres, recrutement et communauté.",
+    btn_roblox_game: "Jouer sur Roblox", btn_map: "Ouvrir la carte",
+    stat_1: "Factions", stat_2: "Cartes", stat_3: "Mises à jour",
+    about_title: "À quoi sert ce site ?",
+    about_text: "Ce site est un hub communautaire dédié aux factions dans le jeu Cold War sur Roblox. Il rassemble des informations sur les factions, leur recrutement, les guerres de factions et les tournois au même endroit. Vous pouvez y trouver une faction à rejoindre ou recruter de nouveaux membres, lire des guides pour débutants, suivre les notes de patch et les mises à jour, et échanger avec d'autres chefs de faction et joueurs. Notre objectif est d'aider les factions à grandir, à organiser des matchs plus rapidement et à rendre la scène des factions Cold War plus active et visible.",
+    features_title: "Ce que vous trouverez ici",
+    f1_title: "Annuaire des factions", f1_text: "Une liste des factions actives de Cold War avec leurs chefs, tailles et contacts.",
+    f2_title: "Guerres & Tournois", f2_text: "Annonces de guerres de factions, tableaux et résultats des tournois.",
+    f3_title: "Recrutement", f3_text: "Annonces de recrutement et un espace pour postuler et rejoindre une faction.",
+    f4_title: "Carte Tactique", f4_text: "Dessinez, marquez et planifiez vos stratégies directement sur les cartes du jeu.",
+    footer_left: "Cold War Factions — un projet communautaire de fans pour les factions.", 
+    footer_contact: "Des problèmes ? Écrivez sur Discord :",
+    footer_right: "Non affilié à Roblox Corporation."
+  },
+  uk: {
+    page_title: "Cold War Factions — хаб фракцій Roblox",
+    brand_sub: "Хаб фракцій Roblox", nav_home: "Головна", nav_factions: "Фракції", nav_tours: "Турніри", nav_about: "Про сайт", nav_map: "Тактична карта",
+    hero_tag: "Фракції · Cold War Roblox", hero_title_1: "Cold War", hero_title_2: "Factions",
+    hero_sub: "Хаб для фракцій Cold War у Roblox",
+    hero_text: "Ваш центральний портал про все, що стосується фракцій у плейсі Cold War у Roblox — каталог фракцій, війни, набір і спільнота.",
+    btn_roblox_game: "Грати в Roblox", btn_map: "Відкрити карту",
+    stat_1: "Фракції", stat_2: "Карти", stat_3: "Оновлення",
+    about_title: "Для чого цей сайт?",
+    about_text: "Цей сайт — спільнотний хаб, присвячений фракціям у плейсі Cold War у Roblox. Тут зібрано інформацію про фракції, їхній набір, фракційні війни та турніри в одному місці. Ви можете знайти фракцію, щоб вступити, або набрати нових учасників, читати гайди для новачків, стежити за патчноутами й оновленнями, а також спілкуватися з іншими лідерами фракцій і гравцями. Наша мета — допомогти фракціям зростати, швидше організовувати матчі та зробити фракційну сцену Cold War більш активною й помітною.",
+    features_title: "Що тут є",
+    f1_title: "Каталог фракцій", f1_text: "Список активних фракцій Cold War з лідерами, розмірами та контактами.",
+    f2_title: "Турніри та війни", f2_text: "Анонси фракційних воєн, сітки та результати турнірів.",
+    f3_title: "Набір гравців", f3_text: "Пости про набір у фракції та місце, щоб подати заявку на вступ.",
+    f4_title: "Тактична карта", f4_text: "Малюйте, позначайте та плануйте стратегії прямо на ігрових картах.",
+    footer_left: "Cold War Factions — фанатський спільнотний проєкт для фракцій.", 
+    footer_contact: "Проблеми чи пропозиції? Пишіть у Discord:",
+    footer_right: "Не пов'язаний з Roblox Corporation."
+  }
+};
+
+const i18nEls = document.querySelectorAll('[data-i18n]');
+const langButtons = document.querySelectorAll('.lang');
+
+function setLanguage(lang){
+  const dict = translations[lang];
+  if(!dict) return;
+  document.documentElement.lang = lang;
+  i18nEls.forEach(el => {
+    const key = el.dataset.i18n;
+    if(dict[key] !== undefined) el.textContent = dict[key];
+  });
+  langButtons.forEach(btn => btn.classList.toggle('active', btn.dataset.lang === lang));
+  document.title = dict.page_title;
+  try { localStorage.setItem('cw-factions-lang', lang); } catch(e) {}
+}
+langButtons.forEach(btn => btn.addEventListener('click', () => setLanguage(btn.dataset.lang)));
+
+(function initLang(){
+  let saved = null;
+  try { saved = localStorage.getItem('cw-factions-lang'); } catch(e) {}
+  if(saved && translations[saved]){ setLanguage(saved); return; }
+  const browser = (navigator.language || 'en').slice(0,2).toLowerCase();
+  const map = { ru:'ru', uk:'uk', fr:'fr' };
+  setLanguage(map[browser] || 'en');
+})();
+
+// --- ЖИВОЙ СЧЕТЧИК ИЗ БАЗЫ ДАННЫХ (localStorage или factions.json) ---
+(async function updateCounter() {
+  let count = 2; 
+  
+  const localDB = localStorage.getItem('cw_local_db');
+  if (localDB) {
+    try {
+      count = JSON.parse(localDB).length;
+    } catch(e) {}
+  } else {
+    try {
+      const res = await fetch('factions.json');
+      if (res.ok) {
+        const data = await res.json();
+        count = data.length;
+      }
+    } catch(e) {}
+  }
+  
+  document.getElementById('stat-factions-count').textContent = count;
+})();
+</script>
+</body>
+</html>
