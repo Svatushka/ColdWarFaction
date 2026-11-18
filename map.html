@@ -9,188 +9,598 @@
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#0e100c; --bg2:#151a11; --line:#2b3323; --accent:#c8d94e; --text:#e9ebda;
-    --muted:#98a08a; --map-bg:#1a1a1a; --shadow: rgba(0,0,0,0.5);
+    --bg:#0e100c;
+    --bg2:#151a11;
+    --line:#2b3323;
+    --accent:#c8d94e;
+    --text:#e9ebda;
+    --muted:#98a08a;
+    --map-bg:#1a1a1a;
+    --shadow: rgba(0,0,0,0.5);
   }
+
   body.light-theme {
-    --bg:#f4f6f0; --bg2:#ffffff; --line:#d0d6c5; --accent:#9abf2b; --text:#1a1e16; --muted:#5c6654; --shadow: rgba(0,0,0,0.1);
+    --bg:#f4f6f0;
+    --bg2:#ffffff;
+    --line:#d0d6c5;
+    --accent:#9abf2b;
+    --text:#1a1e16;
+    --muted:#5c6654;
+    --shadow: rgba(0,0,0,0.1);
   }
+
   *{box-sizing:border-box;margin:0;padding:0}
+
   body{
-    font-family:'Inter',system-ui,-apple-system,sans-serif; background:var(--bg); color:var(--text);
-    overflow:hidden; height: 100vh; display: flex; flex-direction: column; transition: background-color 0.3s, color 0.3s;
+    font-family:'Inter',system-ui,-apple-system,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    overflow:hidden;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    transition: background-color 0.3s, color 0.3s;
   }
+
   header{
-    background:rgba(14,16,12,.95); border-bottom:1px solid var(--line); display: flex;
-    align-items: center; justify-content: space-between; padding: 8px 16px; height: 50px; flex-shrink: 0;
+    background:rgba(14,16,12,.95);
+    border-bottom:1px solid var(--line);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 16px;
+    height: 50px;
+    flex-shrink: 0;
+    transition: background-color 0.3s;
   }
   body.light-theme header { background:rgba(255,255,255,.95); }
-  .header-left { display: flex; align-items: center; gap: 20px; }
+
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
   .back-btn {
-    color: var(--text); text-decoration: none; font-family: 'Oswald', sans-serif; font-size: 14px;
-    font-weight: 600; text-transform: uppercase; display: flex; align-items: center; gap: 8px; transition: color 0.2s;
+    color: var(--text);
+    text-decoration: none;
+    font-family: 'Oswald', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: color 0.2s;
+    line-height: 1.1;
   }
   .back-btn:hover { color: var(--accent); }
-  .header-controls { display: flex; align-items: center; gap: 10px; }
+  .back-btn span { font-size: 18px; }
+
+  .header-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
   .icon-btn {
-    background: transparent; border: 1px solid var(--line); color: var(--text); width: 30px; height: 30px;
-    border-radius: 6px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 14px; transition: all 0.2s;
+    background: transparent;
+    border: 1px solid var(--line);
+    color: var(--text);
+    width: 30px;
+    height: 30px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s;
   }
   .icon-btn:hover { border-color: var(--accent); color: var(--accent); }
-  .lang-switch{ display:flex; gap:4px; padding:3px; border:1px solid var(--line); border-radius:6px; background:rgba(255,255,255,.02); }
+
+  .lang-switch{
+    display:flex;
+    gap:4px;
+    padding:3px;
+    border:1px solid var(--line);
+    border-radius:6px;
+    background:rgba(255,255,255,.02);
+  }
+
   .lang{
-    border:0; background:transparent; color:var(--muted); font-family:'Inter',sans-serif; font-size:11px;
-    font-weight:600; letter-spacing:.08em; padding:4px 8px; border-radius:4px; cursor:pointer; transition:all .18s;
+    border:0;
+    background:transparent;
+    color:var(--muted);
+    font-family:'Inter',sans-serif;
+    font-size:11px;
+    font-weight:600;
+    letter-spacing:.08em;
+    padding:4px 8px;
+    border-radius:4px;
+    cursor:pointer;
+    transition:all .18s;
   }
   .lang:hover{color:var(--text);background:rgba(255,255,255,.05)}
   .lang.active{ background:var(--accent); color:#12140c; }
 
-  .map-tool-section { display: flex; flex: 1; background: var(--map-bg); overflow: hidden; position: relative; }
+  .map-tool-section {
+    display: flex;
+    flex: 1;
+    background: var(--map-bg);
+    overflow: hidden;
+    position: relative;
+  }
+
   .map-sidebar {
-    width: 260px; background: #232a22; border-right: 1px solid #333; padding: 12px 12px;
-    display: flex; flex-direction: column; gap: 10px; overflow-y: auto; flex-shrink: 0; z-index: 10;
+    width: 260px;
+    background: #232a22;
+    border-right: 1px solid #333;
+    padding: 12px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    flex-shrink: 0;
+    z-index: 10;
+    transition: background-color 0.3s;
   }
   body.light-theme .map-sidebar { background: #e9ebda; border-right-color: #ccc; }
-  .map-sidebar-group { display: flex; flex-direction: column; gap: 5px; }
-  .map-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); font-weight: 600; }
+
+  .map-sidebar-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .map-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    font-weight: 600;
+  }
+
   .map-select {
-    width: 100%; background: var(--bg2); border: 1px solid var(--line); color: var(--text);
-    padding: 6px 8px; border-radius: 4px; font-family: inherit; font-size: 13px; outline: none;
+    width: 100%;
+    background: var(--bg2);
+    border: 1px solid var(--line);
+    color: var(--text);
+    padding: 6px 8px;
+    border-radius: 4px;
+    font-family: inherit;
+    font-size: 13px;
+    outline: none;
   }
   .map-select option { background: var(--bg2); color: var(--text); }
+
   .map-btn {
-    background: var(--line); border: 1px solid var(--line); color: var(--text); padding: 7px 8px;
-    border-radius: 4px; cursor: pointer; font-family: inherit; font-size: 12px; font-weight: 600;
-    display: flex; align-items: center; justify-content: center; gap: 4px; transition: all 0.2s; white-space: nowrap;
+    background: var(--line);
+    border: 1px solid var(--line);
+    color: var(--text);
+    padding: 7px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    transition: all 0.2s;
+    white-space: nowrap;
   }
   .map-btn:hover { background: var(--bg2); border-color: var(--accent); }
   .map-btn.active { background: var(--accent); color: #12140c; border-color: var(--accent); }
-  .tool-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
-  .tool-grid .map-btn[data-tool="pan"] { grid-column: span 2; }
-  .color-palette { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; }
-  .color-swatch {
-    aspect-ratio: 1; border-radius: 3px; border: 2px solid transparent; cursor: pointer; padding: 0;
-    transition: transform 0.1s, border-color 0.2s; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.2); position: relative;
+
+  .tool-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5px;
   }
+  .tool-grid .map-btn[data-tool="pan"] { grid-column: span 2; }
+
+  .color-palette {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 5px;
+  }
+
+  .color-swatch {
+    aspect-ratio: 1;
+    border-radius: 3px;
+    border: 2px solid transparent;
+    cursor: pointer;
+    padding: 0;
+    transition: transform 0.1s, border-color 0.2s;
+    box-shadow: inset 0 0 0 1px rgba(0,0,0,0.2);
+    position: relative;
+  }
+
   .color-swatch:hover { transform: scale(1.1); }
   .color-swatch.active { border-color: #fff; box-shadow: 0 0 6px rgba(255,255,255,0.6); }
+
   .custom-color-btn {
-    background: linear-gradient(135deg, #e74c3c, #f1c40f, #2ecc71, #3498db); color: #fff;
-    display: flex; align-items: center; justify-content: center; font-size: 14px; border: 1px solid var(--line);
+    background: linear-gradient(135deg, #e74c3c, #f1c40f, #2ecc71, #3498db);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    border: 1px solid var(--line);
   }
-  #colorPicker { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
-  .size-header { display: flex; justify-content: space-between; align-items: center; }
-  .size-value { background: var(--bg2); border: 1px solid var(--line); color: var(--text); font-size: 11px; font-weight: 600; padding: 1px 6px; border-radius: 3px; min-width: 28px; text-align: center; }
+  .custom-color-btn:hover { background: linear-gradient(135deg, #c0392b, #f39c12, #27ae60, #2980b9); }
+
+  #colorPicker {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    opacity: 0;
+    cursor: pointer;
+  }
+
+  .size-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .size-value {
+    background: var(--bg2);
+    border: 1px solid var(--line);
+    color: var(--text);
+    font-size: 11px;
+    font-weight: 600;
+    padding: 1px 6px;
+    border-radius: 3px;
+    min-width: 28px;
+    text-align: center;
+  }
+
   .map-range { width: 100%; cursor: pointer; accent-color: #4a90e2; height: 4px; }
-  .bottom-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: auto; }
+
+  .bottom-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+    margin-top: auto;
+  }
   .bottom-actions .btn-save { grid-column: span 2; }
+  
   .btn-undo { background: var(--line); color: var(--text); }
   .btn-clear { background: #6b2626; color: #fff; border-color: #8a2d2d; }
   .btn-clear:hover { background: #8a2d2d; border-color: #ff4d4d; }
   .btn-save { background: #27ae60; color: #fff; border-color: #2ecc71; }
   .btn-save:hover { background: #2ecc71; border-color: #27ae60; }
 
-  /* КОНТЕЙНЕР И СЛОИ */
   .map-canvas-wrapper {
-    flex: 1; position: relative; background: #111; overflow: hidden;
-    display: flex; align-items: center; justify-content: center; cursor: default;
+    flex: 1;
+    position: relative;
+    background: #111;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: default;
   }
-  
+
   .canvas-container {
-    position: relative; /* Чтобы слои накладывались друг на друга */
     transform-origin: center center;
-    background: #1a1a1a; /* Фон вокруг карты */
-  }
-
-  /* Фоновая картинка карты */
-  #bgMap {
+    transition: transform 0.05s linear;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1920px;
+    height: 1080px;
     position: absolute;
-    display: block;
-    pointer-events: none; /* Клики проходят сквозь картинку на холст */
-    user-select: none;
   }
 
-  /* Холст для рисования (лежит поверх карты) */
   #tacticalCanvas {
-    position: absolute;
-    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
     display: block;
-    cursor: crosshair; 
-    background: transparent;
+    box-shadow: 0 0 30px rgba(0,0,0,0.9);
+    cursor: crosshair;
+    background: #2a3325;
   }
-  
+
   .map-canvas-wrapper.pan-active { cursor: grab !important; }
   .map-canvas-wrapper.pan-active:active { cursor: grabbing !important; }
-  
+
   .beta-badge {
-    position: absolute; top: 15px; left: 15px; background: rgba(255, 77, 77, 0.1);
-    border: 1px solid #ff4d4d; color: #ff4d4d; padding: 4px 10px; font-size: 10px; font-weight: 600;
-    text-transform: uppercase; letter-spacing: 0.1em; border-radius: 4px; z-index: 10; pointer-events: none;
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    background: rgba(255, 77, 77, 0.1);
+    border: 1px solid #ff4d4d;
+    color: #ff4d4d;
+    padding: 4px 10px;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    border-radius: 4px;
+    z-index: 10;
+    pointer-events: none;
   }
-  .zoom-controls { position: absolute; bottom: 20px; right: 20px; display: flex; flex-direction: column; gap: 5px; z-index: 10; }
+
+  .zoom-controls {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    z-index: 10;
+  }
+
   .zoom-btn {
-    width: 36px; height: 36px; background: #232a22; border: 1px solid #3a4a35; color: #fff; font-size: 18px;
-    border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s;
+    width: 36px;
+    height: 36px;
+    background: #232a22;
+    border: 1px solid #3a4a35;
+    color: #fff;
+    font-size: 18px;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    user-select: none;
   }
   .zoom-btn:hover { background: #35472f; border-color: var(--accent); }
 
   .squad-toggle {
-    position: absolute; top: 15px; right: 15px; z-index: 20; background: var(--bg2); border: 1px solid var(--accent);
-    color: var(--accent); padding: 8px 16px; border-radius: 6px; font-family: 'Oswald', sans-serif; font-weight: 600;
-    text-transform: uppercase; cursor: pointer; box-shadow: 0 4px 12px var(--shadow); transition: all 0.2s;
-    display: flex; align-items: center; gap: 8px;
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    z-index: 20;
+    background: var(--bg2);
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-family: 'Oswald', sans-serif;
+    font-weight: 600;
+    text-transform: uppercase;
+    cursor: pointer;
+    box-shadow: 0 4px 12px var(--shadow);
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
   }
   .squad-toggle:hover { background: var(--accent); color: #12140c; }
+
   .squad-panel {
-    position: absolute; top: 0; right: 0; bottom: 0; width: 320px; background: var(--bg2);
-    border-left: 1px solid var(--line); transform: translateX(100%); transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    display: flex; flex-direction: column; z-index: 30; box-shadow: -10px 0 30px var(--shadow);
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 320px;
+    background: var(--bg2);
+    border-left: 1px solid var(--line);
+    transform: translateX(100%);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s;
+    display: flex;
+    flex-direction: column;
+    z-index: 30;
+    box-shadow: -10px 0 30px var(--shadow);
   }
   .squad-panel.open { transform: translateX(0); }
-  .squad-panel-header { padding: 15px; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; }
-  .squad-panel-header h3 { font-family: 'Oswald', sans-serif; font-size: 16px; text-transform: uppercase; color: var(--accent); }
-  .close-squad-btn { background: transparent; border: none; color: var(--muted); font-size: 20px; cursor: pointer; }
-  .squad-list { flex: 1; overflow-y: auto; padding: 15px; display: flex; flex-direction: column; gap: 15px; }
-  .squad-card { background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 12px; display: flex; flex-direction: column; gap: 10px; }
-  .squad-card-header { display: flex; justify-content: space-between; align-items: center; }
-  .squad-name-input { background: transparent; border: none; color: var(--text); font-weight: 600; font-size: 14px; font-family: inherit; outline: none; width: 70%; border-bottom: 1px dashed transparent; }
+
+  .squad-panel-header {
+    padding: 15px;
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .squad-panel-header h3 {
+    font-family: 'Oswald', sans-serif;
+    font-size: 16px;
+    text-transform: uppercase;
+    color: var(--accent);
+    letter-spacing: 0.05em;
+  }
+  .close-squad-btn {
+    background: transparent;
+    border: none;
+    color: var(--muted);
+    font-size: 20px;
+    cursor: pointer;
+  }
+  .close-squad-btn:hover { color: var(--text); }
+
+  .squad-list {
+    flex: 1;
+    overflow-y: auto;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .squad-card {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .squad-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .squad-name-input {
+    background: transparent;
+    border: none;
+    color: var(--text);
+    font-weight: 600;
+    font-size: 14px;
+    font-family: inherit;
+    outline: none;
+    width: 70%;
+    border-bottom: 1px dashed transparent;
+  }
   .squad-name-input:focus { border-bottom-color: var(--accent); }
-  .squad-color-dot { width: 16px; height: 16px; border-radius: 50%; cursor: pointer; border: 2px solid #fff; box-shadow: 0 0 5px rgba(0,0,0,0.5); }
-  .player-tags { display: flex; flex-wrap: wrap; gap: 5px; }
-  .player-tag { background: var(--line); border: 1px solid var(--muted); color: var(--text); font-size: 11px; padding: 2px 8px; border-radius: 12px; display: flex; align-items: center; gap: 5px; }
+  
+  .squad-color-dot {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid #fff;
+    box-shadow: 0 0 5px rgba(0,0,0,0.5);
+  }
+
+  .player-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+  }
+  .player-tag {
+    background: var(--line);
+    border: 1px solid var(--muted);
+    color: var(--text);
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
   .player-tag span { cursor: pointer; color: #e74c3c; font-weight: bold; }
-  .add-player-form { display: flex; gap: 5px; }
-  .add-player-input { flex: 1; background: var(--bg2); border: 1px solid var(--line); color: var(--text); padding: 4px 8px; border-radius: 4px; font-size: 12px; outline: none; }
-  .add-player-btn { background: var(--line); border: 1px solid var(--line); color: var(--accent); padding: 4px 10px; border-radius: 4px; cursor: pointer; font-weight: bold; }
-  .squad-actions { display: flex; gap: 5px; margin-top: 5px; }
-  .squad-actions button { flex: 1; padding: 6px; border-radius: 4px; border: 1px solid var(--line); cursor: pointer; font-size: 11px; font-weight: 600; transition: all 0.2s; }
+  .player-tag span:hover { color: #ff4d4d; }
+
+  .add-player-form {
+    display: flex;
+    gap: 5px;
+  }
+  .add-player-input {
+    flex: 1;
+    background: var(--bg2);
+    border: 1px solid var(--line);
+    color: var(--text);
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    outline: none;
+  }
+  .add-player-btn {
+    background: var(--line);
+    border: 1px solid var(--line);
+    color: var(--accent);
+    padding: 4px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  .add-player-btn:hover { background: var(--accent); color: #12140c; }
+
+  .squad-actions {
+    display: flex;
+    gap: 5px;
+    margin-top: 5px;
+  }
+  .squad-actions button {
+    flex: 1;
+    padding: 6px;
+    border-radius: 4px;
+    border: 1px solid var(--line);
+    cursor: pointer;
+    font-size: 11px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    transition: all 0.2s;
+  }
   .btn-place { background: #1e3a5f; color: #a4d4ff; border-color: #2c5a8a; }
   .btn-place:hover { background: #2c5a8a; color: #fff; }
   .btn-delete { background: #4a1c1c; color: #ffa4a4; border-color: #7a2c2c; }
   .btn-delete:hover { background: #7a2c2c; color: #fff; }
-  
+
   .squad-marker {
-    position: absolute; background: rgba(15, 20, 13, 0.9); backdrop-filter: blur(4px); border: 3px solid #3498db;
-    border-radius: 8px; padding: 10px 15px; color: #fff; pointer-events: auto; cursor: grab;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.6); min-width: 120px; user-select: none; transform: translate(-50%, -50%); z-index: 5;
+    position: absolute;
+    background: rgba(15, 20, 13, 0.9);
+    backdrop-filter: blur(4px);
+    border: 3px solid #3498db;
+    border-radius: 8px;
+    padding: 10px 15px;
+    color: #fff;
+    pointer-events: auto;
+    cursor: grab;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.6);
+    min-width: 120px;
+    user-select: none;
+    transform: translate(-50%, -50%);
   }
-  .squad-marker-title { font-family: 'Oswald', sans-serif; font-size: 16px; font-weight: 700; text-transform: uppercase; margin-bottom: 5px; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 3px; }
-  .squad-marker-players { font-size: 12px; line-height: 1.4; color: #d1d9c6; }
+  .squad-marker:active { cursor: grabbing; }
   
+  .squad-marker-title {
+    font-family: 'Oswald', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+    border-bottom: 1px solid rgba(255,255,255,0.2);
+    padding-bottom: 3px;
+  }
+  
+  .squad-marker-players {
+    font-size: 12px;
+    line-height: 1.4;
+    color: #d1d9c6;
+  }
+
   .placement-banner {
-    position: absolute; top: 20px; left: 50%; transform: translateX(-50%); background: rgba(52, 152, 219, 0.9);
-    color: #fff; padding: 10px 20px; border-radius: 30px; font-weight: 600; font-size: 14px; z-index: 50;
-    pointer-events: none; display: none; box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(52, 152, 219, 0.9);
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 30px;
+    font-weight: 600;
+    font-size: 14px;
+    z-index: 50;
+    pointer-events: none;
+    display: none;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
   }
   .placement-banner.active { display: block; }
-  .sidebar-contact { margin-top: 15px; padding: 10px; border-radius: 6px; background: rgba(88, 101, 242, 0.1); border: 1px solid rgba(88, 101, 242, 0.3); text-align: center; font-size: 11px; }
-  .sidebar-contact a { color: #5865F2; font-weight: 700; text-decoration: none; }
+
+  .sidebar-contact {
+    margin-top: 15px;
+    padding: 10px;
+    border-radius: 6px;
+    background: rgba(88, 101, 242, 0.1);
+    border: 1px solid rgba(88, 101, 242, 0.3);
+    text-align: center;
+    font-size: 11px;
+  }
+  .sidebar-contact a {
+    color: #5865F2;
+    font-weight: 700;
+    text-decoration: none;
+  }
+  .sidebar-contact a:hover { color: #fff; }
 
   @media(max-width:820px){
     body { overflow: auto; height: auto; }
     .map-tool-section { flex-direction: column; height: auto; }
     .map-sidebar { width: 100%; border-right: none; border-bottom: 1px solid #333; }
     .map-canvas-wrapper { height: 500px; }
+    .canvas-container { transform: scale(0.5) !important; }
     .squad-panel { width: 100%; }
   }
 </style>
@@ -199,20 +609,31 @@
 
 <header>
   <div class="header-left">
-    <a href="index.html" class="back-btn">← <span>На главную</span></a>
-    <a href="factions.html" class="back-btn" style="color: var(--accent); margin-left: 10px;">🛡️ Фракции</a>
+    <a href="index.html" class="back-btn">
+      <span>←</span> <span data-i18n="btn_back">Back to Home</span>
+    </a>
+    <a href="factions.html" class="back-btn" style="color: var(--accent); margin-left: 10px;">
+      🛡️ Factions
+    </a>
   </div>
+  
   <div class="header-controls">
-    <button class="icon-btn" id="themeToggle">🌓</button>
+    <button class="icon-btn" id="themeToggle" title="Toggle Theme">🌓</button>
+    <div class="lang-switch">
+      <button class="lang" data-lang="en">EN</button>
+      <button class="lang" data-lang="ru">RU</button>
+      <button class="lang" data-lang="fr">FR</button>
+      <button class="lang" data-lang="uk">UA</button>
+    </div>
   </div>
 </header>
 
 <div class="map-tool-section">
   <div class="map-sidebar">
     <div class="map-sidebar-group">
-      <label class="map-label">MAPS LIST</label>
+      <label class="map-label" data-i18n="map_list_label">MAPS LIST (GITHUB)</label>
       <select class="map-select" id="mapSelect">
-        <option value="" disabled selected>-- Выберите карту --</option>
+        <option value="" data-i18n="map_select_default">-- Select a map --</option>
         <option value="valley_view">Valley View</option>
         <option value="morslingen">Morslingen</option>
         <option value="khokhlovka">Khokhlovka</option>
@@ -223,24 +644,26 @@
     </div>
 
     <div class="map-sidebar-group">
-      <label class="map-label">CUSTOM MAP</label>
+      <label class="map-label" data-i18n="custom_map_label">CUSTOM MAP</label>
       <input type="file" id="customMapUpload" accept="image/*" style="display:none">
-      <button class="map-btn" onclick="document.getElementById('customMapUpload').click()">📂 Загрузить свою</button>
+      <button class="map-btn" onclick="document.getElementById('customMapUpload').click()">
+        📂 <span data-i18n="btn_open_file">OPEN FILE</span>
+      </button>
     </div>
 
     <div class="map-sidebar-group">
-      <label class="map-label">TOOLS</label>
+      <label class="map-label" data-i18n="tools_label">TOOLS</label>
       <div class="tool-grid">
-        <button class="map-btn active" data-tool="brush">🖌️ Кисть</button>
-        <button class="map-btn" data-tool="line">📏 Линия</button>
-        <button class="map-btn" data-tool="rect">⬜ Квадрат</button>
-        <button class="map-btn" data-tool="text">T Текст</button>
-        <button class="map-btn" data-tool="pan">✋ Движение</button>
+        <button class="map-btn active" data-tool="brush">🖌️ <span data-i18n="tool_brush">Brush</span></button>
+        <button class="map-btn" data-tool="line">📏 <span data-i18n="tool_line">Line</span></button>
+        <button class="map-btn" data-tool="rect">⬜ <span data-i18n="tool_rect">Rect</span></button>
+        <button class="map-btn" data-tool="text">T <span data-i18n="tool_text">Text</span></button>
+        <button class="map-btn" data-tool="pan">✋ <span data-i18n="tool_pan">Move</span></button>
       </div>
     </div>
 
     <div class="map-sidebar-group">
-      <label class="map-label">COLOR</label>
+      <label class="map-label" data-i18n="color_label">COLOR</label>
       <div class="color-palette" id="colorPalette">
         <button class="color-swatch active" data-color="#2ecc71" style="background:#2ecc71"></button>
         <button class="color-swatch" data-color="#e74c3c" style="background:#e74c3c"></button>
@@ -258,482 +681,642 @@
 
     <div class="map-sidebar-group">
       <div class="size-header">
-        <label class="map-label">SIZE (ТОЛЩИНА)</label>
+        <label class="map-label" data-i18n="size_label">SIZE (THICKNESS)</label>
         <span id="sizeValue" class="size-value">4</span>
       </div>
       <input type="range" id="sizeSlider" class="map-range" min="1" max="20" value="4">
     </div>
 
     <div class="bottom-actions">
-      <button class="map-btn btn-undo" id="undoBtn">↩️ Отменить</button>
-      <button class="map-btn btn-clear" id="clearBtn">🗑️ Очистить</button>
-      <button class="map-btn btn-save" id="saveBtn">💾 Скачать PNG</button>
+      <button class="map-btn btn-undo" id="undoBtn">↩️ <span data-i18n="btn_undo">Undo</span></button>
+      <button class="map-btn btn-clear" id="clearBtn">🗑️ <span data-i18n="btn_clear">Clear</span></button>
+      <button class="map-btn btn-save" id="saveBtn">💾 <span data-i18n="btn_save">Save PNG</span></button>
     </div>
 
     <div class="sidebar-contact">
-      <span>Проблемы? Пишите в Discord:</span><br>
+      <span data-i18n="footer_contact">Issues? Write to Discord:</span><br>
       <a href="https://discordapp.com/users/623589823780749312" target="_blank">@sirofimo4ka</a>
     </div>
   </div>
 
   <div class="map-canvas-wrapper" id="canvasWrapper">
     <div class="beta-badge">BETA version</div>
-    <div class="placement-banner" id="placementBanner">Кликните на карту, чтобы поставить отряд</div>
     
+    <div class="placement-banner" id="placementBanner" data-i18n="squad_placement_banner">Кликните на карту, чтобы поставить отряд</div>
+
     <div class="canvas-container" id="canvasContainer">
-      <!-- Слой 1: Сама картинка карты -->
-      <img id="bgMap" src="" alt="Map">
-      <!-- Слой 2: Холст для рисования -->
-      <canvas id="tacticalCanvas"></canvas>
+      <canvas id="tacticalCanvas" width="1920" height="1080"></canvas>
+      <div id="squadMarkersLayer" style="position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none;"></div>
     </div>
 
     <div class="zoom-controls">
-      <button class="zoom-btn" id="zoomIn">+</button>
-      <button class="zoom-btn" id="zoomOut">-</button>
+      <button class="zoom-btn" id="zoomInBtn" title="Zoom In">+</button>
+      <button class="zoom-btn" id="zoomOutBtn" title="Zoom Out">−</button>
+      <button class="zoom-btn" id="zoomResetBtn" title="Reset View" style="font-size:14px;">↺</button>
     </div>
 
-    <button class="squad-toggle" id="squadToggle">🛡️ Отряды</button>
-    
+    <button class="squad-toggle" id="squadToggleBtn">🛡️ SQUADS</button>
+
     <div class="squad-panel" id="squadPanel">
       <div class="squad-panel-header">
-        <h3>Отряды</h3>
-        <button class="close-squad-btn" id="closeSquadPanel">✕</button>
+        <h3 data-i18n="squad_panel_title">Управление отрядами</h3>
+        <button class="close-squad-btn" id="closeSquadBtn">✕</button>
+      </div>
+      <div style="padding: 15px; border-bottom: 1px solid var(--line);">
+        <button class="map-btn" style="width:100%; border-color:var(--accent); color:var(--accent);" onclick="createSquad()" data-i18n="squad_create_btn">+ Создать отряд</button>
       </div>
       <div class="squad-list" id="squadList"></div>
-      <div style="padding: 15px; border-top: 1px solid var(--line);">
-        <button class="map-btn" style="width: 100%;" id="addSquadBtn">+ Добавить отряд</button>
-      </div>
     </div>
+
   </div>
 </div>
 
 <script>
-const PADDING = 1000; // Отступ во все стороны (холст больше карты)
+// --- СИСТЕМА ТЕМ ---
+const themeToggle = document.getElementById('themeToggle');
+if (localStorage.getItem('cw-theme') === 'light') {
+  document.body.classList.add('light-theme');
+}
+themeToggle.addEventListener('click', () => {
+  document.body.classList.toggle('light-theme');
+  localStorage.setItem('cw-theme', document.body.classList.contains('light-theme') ? 'light' : 'dark');
+});
+
+// --- 1. СЛОВАРИ ПЕРЕВОДОВ ---
+const translations = {
+  en: {
+    page_title: "Tactical Map — Cold War Factions", btn_back: "Back to Home",
+    map_list_label: "MAPS LIST (GITHUB)", map_select_default: "-- Select a map --",
+    custom_map_label: "CUSTOM MAP", btn_open_file: "OPEN FILE", tools_label: "TOOLS",
+    tool_brush: "Brush", tool_line: "Line", tool_rect: "Rect", tool_text: "Text", tool_pan: "Move",
+    color_label: "COLOR", size_label: "SIZE (THICKNESS)", btn_undo: "Undo", btn_clear: "Clear", btn_save: "Save PNG",
+    footer_contact: "Issues? Write to Discord:",
+    squad_panel_title: "SQUAD MANAGEMENT", squad_create_btn: "+ Create Squad",
+    squad_player_placeholder: "Player name...", squad_place_btn: "📍 To Map",
+    squad_delete_btn: "🗑️ Delete", squad_placement_banner: "Click on the map to place the squad",
+    squad_empty: "Empty"
+  },
+  ru: {
+    page_title: "Тактическая карта — Cold War Factions", btn_back: "На главную",
+    map_list_label: "СПИСОК КАРТ (GITHUB)", map_select_default: "-- Выберите карту --",
+    custom_map_label: "СВОЯ КАРТА", btn_open_file: "ОТКРЫТЬ ФАЙЛ", tools_label: "ИНСТРУМЕНТЫ",
+    tool_brush: "Кисть", tool_line: "Линия", tool_rect: "Прямоуг.", tool_text: "Текст", tool_pan: "Рука",
+    color_label: "ЦВЕТ", size_label: "РАЗМЕР (ТОЛЩИНА)", btn_undo: "Отменить", btn_clear: "Очистить", btn_save: "Сохранить PNG",
+    footer_contact: "Проблемы? Пишите в Discord:",
+    squad_panel_title: "УПРАВЛЕНИЕ ОТРЯДАМИ", squad_create_btn: "+ Создать отряд",
+    squad_player_placeholder: "Имя игрока...", squad_place_btn: "📍 На карту",
+    squad_delete_btn: "🗑️ Удалить", squad_placement_banner: "Кликните на карту, чтобы поставить отряд",
+    squad_empty: "Пусто"
+  },
+  fr: {
+    page_title: "Carte Tactique — Cold War Factions", btn_back: "Retour à l'accueil",
+    map_list_label: "LISTE DES CARTES (GITHUB)", map_select_default: "-- Sélectionnez une carte --",
+    custom_map_label: "CARTE PERSONNALISÉE", btn_open_file: "OUVRIR UN FICHIER", tools_label: "OUTILS",
+    tool_brush: "Pinceau", tool_line: "Ligne", tool_rect: "Rect", tool_text: "Texte", tool_pan: "Main",
+    color_label: "COULEUR", size_label: "TAILLE (ÉPAISSEUR)", btn_undo: "Annuler", btn_clear: "Effacer", btn_save: "Sauver PNG",
+    footer_contact: "Des problèmes ? Écrivez :",
+    squad_panel_title: "GESTION DES ESCADRONS", squad_create_btn: "+ Créer un escadron",
+    squad_player_placeholder: "Nom du joueur...", squad_place_btn: "📍 Sur la carte",
+    squad_delete_btn: "🗑️ Supprimer", squad_placement_banner: "Cliquez sur la carte pour placer l'escadron",
+    squad_empty: "Vide"
+  },
+  uk: {
+    page_title: "Тактична карта — Cold War Factions", btn_back: "На головну",
+    map_list_label: "СПИСОК КАРТ (GITHUB)", map_select_default: "-- Оберіть карту --",
+    custom_map_label: "СВОЯ КАРТА", btn_open_file: "ВІДКРИТИ ФАЙЛ", tools_label: "ІНСТРУМЕНТИ",
+    tool_brush: "Пензель", tool_line: "Лінія", tool_rect: "Прямокут.", tool_text: "Текст", tool_pan: "Рука",
+    color_label: "КОЛІР", size_label: "РОЗМІР (ТОВЩИНА)", btn_undo: "Скасувати", btn_clear: "Очистити", btn_save: "Зберегти PNG",
+    footer_contact: "Проблеми? Пишіть у Discord:",
+    squad_panel_title: "УПРАВЛІННЯ ЗАГОНАМИ", squad_create_btn: "+ Створити загін",
+    squad_player_placeholder: "Ім'я гравця...", squad_place_btn: "📍 На карту",
+    squad_delete_btn: "🗑️ Видалити", squad_placement_banner: "Клікніть на карту, щоб поставити загін",
+    squad_empty: "Порожньо"
+  }
+};
+
+let currentLangCode = 'en';
+const i18nEls = document.querySelectorAll('[data-i18n]');
+const langButtons = document.querySelectorAll('.lang');
 
 const canvas = document.getElementById('tacticalCanvas');
 const ctx = canvas.getContext('2d');
-const bgMap = document.getElementById('bgMap');
-const wrapper = document.getElementById('canvasWrapper');
-const container = document.getElementById('canvasContainer');
-const banner = document.getElementById('placementBanner');
-const mapSelect = document.getElementById('mapSelect');
+const canvasWrapper = document.getElementById('canvasWrapper');
+const canvasContainer = document.getElementById('canvasContainer');
+const squadMarkersLayer = document.getElementById('squadMarkersLayer');
 
+let isDrawing = false;
 let currentTool = 'brush';
 let currentColor = '#2ecc71';
 let currentSize = 4;
-let isDrawing = false;
 let startX = 0, startY = 0;
-let zoom = 1;
-let panX = 0, panY = 0;
-let mapLoaded = false;
+let undoStack = [];
+let baseImage = null; 
+let currentMapName = 'custom_map';
 
-// --- ЗАГРУЗКА КАРТ ИЗ ПАПКИ maps/ ---
-mapSelect.addEventListener('change', (e) => {
-  const mapId = e.target.value;
-  if (!mapId) return;
-  loadMap(`maps/${mapId}.jpg`, mapId);
-});
+let scale = 0.5;
+let panX = 0;
+let panY = 0;
+let isPanning = false;
+let panStartX = 0;
+let panStartY = 0;
+let spacePressed = false;
 
-function loadMap(baseUrl, mapId) {
-  const extensions = ['jpg', 'png', 'jpeg', 'webp'];
-  let currentExtIndex = 0;
+let squads = [];
+let placingSquadId = null;
 
-  function tryLoad() {
-    if (currentExtIndex >= extensions.length) {
-      alert(`Карта "${mapId}" не найдена в папке maps/.\nПоддерживаемые форматы: .jpg, .png, .jpeg, .webp`);
-      return;
-    }
-    const url = baseUrl.replace('.jpg', '.' + extensions[currentExtIndex]);
-    currentExtIndex++;
-    
-    bgMap.src = url;
-  }
+const squadPanel = document.getElementById('squadPanel');
+const squadToggleBtn = document.getElementById('squadToggleBtn');
+const closeSquadBtn = document.getElementById('closeSquadBtn');
+const squadListContainer = document.getElementById('squadList');
+const placementBanner = document.getElementById('placementBanner');
 
-  bgMap.onload = () => {
-    mapLoaded = true;
-    
-    // 1. Устанавливаем размеры холста (Картинка + Огромные отступы)
-    canvas.width = bgMap.naturalWidth + (PADDING * 2);
-    canvas.height = bgMap.naturalHeight + (PADDING * 2);
-    
-    // 2. Устанавливаем размеры контейнера (чтобы всё влезло)
-    container.style.width = canvas.width + 'px';
-    container.style.height = canvas.height + 'px';
-    
-    // 3. Позиционируем картинку по центру контейнера
-    bgMap.style.left = PADDING + 'px';
-    bgMap.style.top = PADDING + 'px';
-    
-    // 4. Очищаем холст для нового рисунка
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    saveState();
-    
-    // 5. Центрируем вид на карте
-    fitToScreen();
-  };
-
-  bgMap.onerror = tryLoad;
-  tryLoad();
-}
-
-// Загрузка кастомной карты
-document.getElementById('customMapUpload').addEventListener('change', (e) => {
-  const file = e.target.files[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = (ev) => {
-    bgMap.src = ev.target.result;
-    // Дальнейшая логика обрабатывается в bgMap.onload
-  };
-  reader.readAsDataURL(file);
-  e.target.value = '';
-});
-
-// --- УПРАВЛЕНИЕ КАМЕРОЙ (ЗУМ И ПАН) ---
-function fitToScreen() {
-  const wrapperWidth = wrapper.clientWidth;
-  const wrapperHeight = wrapper.clientHeight;
-  // Масштабируем так, чтобы карта занимала 90% экрана (не холст с отступами, а именно карта)
-  const scaleX = wrapperWidth / (bgMap.naturalWidth || 1000);
-  const scaleY = wrapperHeight / (bgMap.naturalHeight || 1000);
-  zoom = Math.min(scaleX, scaleY) * 0.8;
+function setLanguage(lang){
+  currentLangCode = lang;
+  const dict = translations[lang];
+  if(!dict) return;
+  document.documentElement.lang = lang;
   
-  // Центрируем на карте
-  panX = (wrapperWidth / 2) - ((canvas.width / 2) * zoom);
-  panY = (wrapperHeight / 2) - ((canvas.height / 2) * zoom);
+  i18nEls.forEach(el => {
+    const key = el.dataset.i18n;
+    if(dict[key] !== undefined) el.textContent = dict[key];
+  });
   
-  updateTransform();
+  langButtons.forEach(btn => btn.classList.toggle('active', btn.dataset.lang === lang));
+  document.title = dict.page_title;
+  
+  renderSquads();
+  try { localStorage.setItem('cw-factions-lang', lang); } catch(e) {}
+}
+langButtons.forEach(btn => btn.addEventListener('click', () => setLanguage(btn.dataset.lang)));
+
+function resetView() {
+  const wrapperRect = canvasWrapper.getBoundingClientRect();
+  const scaleX = wrapperRect.width / canvas.width;
+  const scaleY = wrapperRect.height / canvas.height;
+  scale = Math.min(scaleX, scaleY) * 0.95;
+  panX = 0; panY = 0;
+  applyTransform();
 }
 
-function updateTransform() {
-  container.style.transform = `translate(${panX}px, ${panY}px) scale(${zoom})`;
+function applyTransform() {
+  canvasContainer.style.transform = `translate(${panX}px, ${panY}px) scale(${scale})`;
 }
 
-document.getElementById('zoomIn').onclick = () => { zoom += 0.1; updateTransform(); };
-document.getElementById('zoomOut').onclick = () => { zoom = Math.max(0.1, zoom - 0.1); updateTransform(); };
+window.addEventListener('resize', resetView);
+setTimeout(resetView, 100);
 
-wrapper.addEventListener('wheel', (e) => {
-  if (e.ctrlKey) {
-    e.preventDefault();
-    zoom += e.deltaY * -0.001;
-    zoom = Math.min(Math.max(0.1, zoom), 5);
-    updateTransform();
-  }
+canvasWrapper.addEventListener('wheel', (e) => {
+  e.preventDefault();
+  const zoomIntensity = 0.1;
+  const delta = e.deltaY < 0 ? 1 : -1;
+  const newScale = Math.min(Math.max(scale + delta * zoomIntensity, 0.1), 5);
+  const rect = canvasWrapper.getBoundingClientRect();
+  const mouseX = e.clientX - rect.left - rect.width / 2;
+  const mouseY = e.clientY - rect.top - rect.height / 2;
+  panX -= mouseX * (newScale / scale - 1);
+  panY -= mouseY * (newScale / scale - 1);
+  scale = newScale;
+  applyTransform();
 }, { passive: false });
 
-let isPanning = false;
-let startPanX = 0, startPanY = 0;
-wrapper.addEventListener('mousedown', (e) => {
-  if (currentTool === 'pan' || e.button === 1) {
-    isPanning = true;
-    startPanX = e.clientX - panX;
-    startPanY = e.clientY - panY;
-    wrapper.classList.add('pan-active');
-  }
-});
-window.addEventListener('mousemove', (e) => {
-  if (isPanning) {
-    panX = e.clientX - startPanX;
-    panY = e.clientY - startPanY;
-    updateTransform();
-  }
-});
-window.addEventListener('mouseup', () => { 
-  isPanning = false; 
-  wrapper.classList.remove('pan-active');
-});
+document.getElementById('zoomInBtn').addEventListener('click', () => { scale = Math.min(scale + 0.2, 5); applyTransform(); });
+document.getElementById('zoomOutBtn').addEventListener('click', () => { scale = Math.max(scale - 0.2, 0.1); applyTransform(); });
+document.getElementById('zoomResetBtn').addEventListener('click', resetView);
 
-// --- ИНСТРУМЕНТЫ РИСОВАНИЯ ---
-let undoStack = [];
+window.addEventListener('keydown', (e) => { if(e.code === 'Space') spacePressed = true; });
+window.addEventListener('keyup', (e) => { if(e.code === 'Space') spacePressed = false; });
+
+function drawBackgroundAndGrid() {
+  ctx.fillStyle = '#2a3325';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
+  ctx.lineWidth = 1;
+  const gridSize = 80;
+  for (let x = 0; x <= canvas.width; x += gridSize) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, canvas.height); ctx.stroke(); }
+  for (let y = 0; y <= canvas.height; y += gridSize) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(canvas.width, y); ctx.stroke(); }
+}
+
+function drawImageContain(img) {
+  drawBackgroundAndGrid();
+  if (!img) return;
+  const canvasRatio = canvas.width / canvas.height;
+  const imgRatio = img.width / img.height;
+  let drawW, drawH, offsetX, offsetY;
+  if (imgRatio > canvasRatio) {
+    drawW = canvas.width; drawH = canvas.width / imgRatio; offsetX = 0; offsetY = (canvas.height - drawH) / 2;
+  } else {
+    drawH = canvas.height; drawW = canvas.height * imgRatio; offsetX = (canvas.width - drawW) / 2; offsetY = 0;
+  }
+  ctx.drawImage(img, offsetX, offsetY, drawW, drawH);
+}
+
 function saveState() {
   if (undoStack.length > 20) undoStack.shift();
-  // Ошибка Tainted canvas исчезла, так как на холсте только рисунки
   undoStack.push(canvas.toDataURL());
 }
+
 function undo() {
-  if (undoStack.length > 0) {
-    const imgData = undoStack.pop();
+  if (undoStack.length > 1) {
+    undoStack.pop();
+    const imgData = undoStack[undoStack.length - 1];
     const img = new Image();
-    img.onload = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.drawImage(img, 0, 0);
-    };
+    img.onload = () => { ctx.clearRect(0, 0, canvas.width, canvas.height); ctx.drawImage(img, 0, 0); };
     img.src = imgData;
+  } else if (undoStack.length === 1) {
+    drawImageContain(baseImage);
+    undoStack = [canvas.toDataURL()];
   }
 }
+
+drawBackgroundAndGrid();
+saveState();
+
+document.querySelectorAll('[data-tool]').forEach(btn => {
+  btn.addEventListener('click', (e) => {
+    document.querySelectorAll('[data-tool]').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentTool = btn.dataset.tool;
+    if (currentTool === 'pan' || spacePressed) { canvasWrapper.classList.add('pan-active'); } else { canvasWrapper.classList.remove('pan-active'); }
+  });
+});
+
+const colorSwatches = document.querySelectorAll('.color-swatch:not(.custom-color-btn)');
+const customColorBtn = document.getElementById('customColorBtn');
+const colorPicker = document.getElementById('colorPicker');
+
+colorSwatches.forEach(swatch => {
+  swatch.addEventListener('click', () => {
+    document.querySelectorAll('.color-swatch').forEach(s => s.classList.remove('active'));
+    swatch.classList.add('active');
+    currentColor = swatch.dataset.color;
+    colorPicker.value = currentColor;
+    customColorBtn.style.background = 'linear-gradient(135deg, #e74c3c, #f1c40f, #2ecc71, #3498db)';
+  });
+});
+
+colorPicker.addEventListener('input', (e) => {
+  currentColor = e.target.value;
+  customColorBtn.style.background = currentColor;
+  document.querySelectorAll('.color-swatch').forEach(s => s.classList.remove('active'));
+  customColorBtn.classList.add('active');
+});
+
+const sizeSlider = document.getElementById('sizeSlider');
+const sizeValue = document.getElementById('sizeValue');
+sizeSlider.addEventListener('input', (e) => {
+  currentSize = parseInt(e.target.value);
+  sizeValue.textContent = currentSize;
+});
+
+document.getElementById('undoBtn').addEventListener('click', undo);
+document.getElementById('clearBtn').addEventListener('click', () => { drawImageContain(baseImage); saveState(); });
+
+document.getElementById('saveBtn').addEventListener('click', () => {
+  const exportCanvas = document.createElement('canvas');
+  exportCanvas.width = canvas.width;
+  exportCanvas.height = canvas.height;
+  const eCtx = exportCanvas.getContext('2d');
+  eCtx.drawImage(canvas, 0, 0);
+
+  squads.forEach(s => {
+    if (s.x !== null && s.y !== null) {
+      eCtx.font = 'bold 24px Inter, sans-serif';
+      const nameWidth = eCtx.measureText(s.name).width;
+      eCtx.font = '18px Inter, sans-serif';
+      let maxPlayerWidth = 0;
+      s.players.forEach(p => {
+        const w = eCtx.measureText(`• ${p}`).width;
+        if (w > maxPlayerWidth) maxPlayerWidth = w;
+      });
+
+      const boxWidth = Math.max(nameWidth, maxPlayerWidth, 140) + 30;
+      const boxHeight = 40 + (s.players.length * 24) + 15;
+
+      eCtx.fillStyle = 'rgba(15, 20, 13, 0.9)';
+      eCtx.strokeStyle = s.color;
+      eCtx.lineWidth = 4;
+      
+      const startX = s.x - boxWidth / 2;
+      const startY = s.y - boxHeight / 2;
+
+      eCtx.beginPath();
+      eCtx.roundRect(startX, startY, boxWidth, boxHeight, 8);
+      eCtx.fill();
+      eCtx.stroke();
+
+      eCtx.fillStyle = s.color;
+      eCtx.font = 'bold 24px Inter, sans-serif';
+      eCtx.fillText(s.name, startX + 15, startY + 30);
+
+      eCtx.beginPath();
+      eCtx.moveTo(startX + 15, startY + 38);
+      eCtx.lineTo(startX + boxWidth - 15, startY + 38);
+      eCtx.strokeStyle = 'rgba(255,255,255,0.2)';
+      eCtx.lineWidth = 1;
+      eCtx.stroke();
+
+      eCtx.fillStyle = '#d1d9c6';
+      eCtx.font = '18px Inter, sans-serif';
+      s.players.forEach((p, i) => {
+        eCtx.fillText(`• ${p}`, startX + 15, startY + 65 + (i * 24));
+      });
+    }
+  });
+
+  const link = document.createElement('a');
+  link.download = `${currentMapName}_tactical_map.png`;
+  link.href = exportCanvas.toDataURL();
+  link.click();
+});
 
 function getMousePos(evt) {
   const rect = canvas.getBoundingClientRect();
-  const scaleX = canvas.width / rect.width;
-  const scaleY = canvas.height / rect.height;
   return {
-    x: (evt.clientX - rect.left) * scaleX,
-    y: (evt.clientY - rect.top) * scaleY
+    x: (evt.clientX - rect.left) * (canvas.width / rect.width),
+    y: (evt.clientY - rect.top) * (canvas.height / rect.height)
   };
 }
 
-canvas.addEventListener('mousedown', (e) => {
-  if (currentTool === 'pan' || !mapLoaded) return;
-  if (currentTool === 'text') {
+let snapshot = null;
+
+canvasWrapper.addEventListener('mousedown', (e) => {
+  if (placingSquadId !== null) {
     const pos = getMousePos(e);
-    const text = prompt("Введите текст:");
+    const squad = squads.find(s => s.id === placingSquadId);
+    if (squad) {
+      squad.x = pos.x;
+      squad.y = pos.y;
+      renderSquads();
+    }
+    placingSquadId = null;
+    document.getElementById('placementBanner').classList.remove('active');
+    return;
+  }
+
+  if (spacePressed || currentTool === 'pan' || e.button === 1 || e.button === 2) {
+    isPanning = true;
+    panStartX = e.clientX - panX;
+    panStartY = e.clientY - panY;
+    canvasWrapper.classList.add('pan-active');
+    e.preventDefault();
+    return;
+  }
+
+  if (e.button !== 0) return;
+
+  const pos = getMousePos(e);
+  startX = pos.x; startY = pos.y; isDrawing = true;
+  snapshot = ctx.getImageData(0, 0, canvas.width, canvas.height);
+  
+  if (currentTool === 'text') {
+    isDrawing = false;
+    const text = prompt("Enter text:");
     if (text) {
       ctx.fillStyle = currentColor;
-      ctx.font = `${currentSize * 5}px Oswald, sans-serif`;
-      ctx.fillText(text, pos.x, pos.y);
+      ctx.font = `bold ${currentSize * 4}px Inter`;
+      ctx.fillText(text, startX, startY);
       saveState();
     }
     return;
   }
-
-  isDrawing = true;
-  const pos = getMousePos(e);
-  startX = pos.x;
-  startY = pos.y;
-  ctx.beginPath();
-  ctx.moveTo(startX, startY);
-  ctx.strokeStyle = currentColor;
-  ctx.fillStyle = currentColor;
-  ctx.lineWidth = currentSize;
-  ctx.lineCap = 'round';
-  ctx.lineJoin = 'round';
-  
-  if (currentTool === 'brush') {
-    ctx.lineTo(startX, startY);
-    ctx.stroke();
-  }
+  ctx.beginPath(); ctx.moveTo(startX, startY);
 });
 
-canvas.addEventListener('mousemove', (e) => {
+window.addEventListener('mousemove', (e) => {
+  if (isPanning) {
+    panX = e.clientX - panStartX; panY = e.clientY - panStartY; applyTransform(); return;
+  }
   if (!isDrawing) return;
   const pos = getMousePos(e);
 
   if (currentTool === 'brush') {
-    ctx.lineTo(pos.x, pos.y);
-    ctx.stroke();
-  }
-});
-
-canvas.addEventListener('mouseup', (e) => {
-  if (!isDrawing) return;
-  isDrawing = false;
-  const pos = getMousePos(e);
-  
-  if (currentTool === 'line') {
-    ctx.beginPath();
-    ctx.moveTo(startX, startY);
-    ctx.lineTo(pos.x, pos.y);
-    ctx.stroke();
+    ctx.strokeStyle = currentColor; ctx.lineWidth = currentSize; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+    ctx.lineTo(pos.x, pos.y); ctx.stroke();
+  } else if (currentTool === 'line') {
+    ctx.putImageData(snapshot, 0, 0);
+    ctx.beginPath(); ctx.moveTo(startX, startY); ctx.lineTo(pos.x, pos.y);
+    ctx.strokeStyle = currentColor; ctx.lineWidth = currentSize; ctx.stroke();
   } else if (currentTool === 'rect') {
-    ctx.beginPath();
-    ctx.rect(startX, startY, pos.x - startX, pos.y - startY);
-    ctx.stroke();
+    ctx.putImageData(snapshot, 0, 0);
+    ctx.beginPath(); ctx.rect(startX, startY, pos.x - startX, pos.y - startY);
+    ctx.strokeStyle = currentColor; ctx.lineWidth = currentSize; ctx.stroke();
   }
-  
-  saveState();
 });
 
-// Выбор инструментов
-document.querySelectorAll('.tool-grid .map-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.tool-grid .map-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    currentTool = btn.dataset.tool;
-    if (currentTool === 'pan') {
-      canvas.style.cursor = 'grab';
-    } else {
-      canvas.style.cursor = 'crosshair';
-    }
+window.addEventListener('mouseup', (e) => {
+  if (isPanning) {
+    isPanning = false;
+    if (currentTool !== 'pan' && !spacePressed) canvasWrapper.classList.remove('pan-active');
+  }
+  if (isDrawing) { isDrawing = false; saveState(); }
+});
+
+canvasWrapper.addEventListener('contextmenu', (e) => e.preventDefault());
+
+document.getElementById('customMapUpload').addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  currentMapName = file.name.replace(/\.[^/.]+$/, "");
+  const reader = new FileReader();
+  reader.onload = (event) => {
+    const img = new Image();
+    img.onload = () => { baseImage = img; drawImageContain(img); saveState(); };
+    img.src = event.target.result;
+  };
+  reader.readAsDataURL(file);
+});
+
+document.getElementById('mapSelect').addEventListener('change', (e) => {
+  const mapId = e.target.value;
+  if (!mapId) { baseImage = null; currentMapName = 'custom_map'; drawBackgroundAndGrid(); saveState(); return; }
+  
+  const mapText = e.target.options[e.target.selectedIndex].text;
+  currentMapName = mapText.toLowerCase().replace(/\s+/g, '_');
+
+    const mapUrls = {
+    valley_view: 'https://raw.githubusercontent.com/Svatushka/ColdWarFaction/main/maps/valley_view.png',
+    morslingen: 'https://raw.githubusercontent.com/Svatushka/ColdWarFaction/main/maps/morslingen.png',
+    khokhlovka: 'https://raw.githubusercontent.com/Svatushka/ColdWarFaction/main/maps/khokhlovka.png',
+    vavidas: 'https://raw.githubusercontent.com/Svatushka/ColdWarFaction/main/maps/vavidas.PNG',
+    wukong_delta: 'https://raw.githubusercontent.com/Svatushka/ColdWarFaction/main/maps/wukong_delta.png',
+    zts_rudna: 'https://raw.githubusercontent.com/Svatushka/ColdWarFaction/main/maps/zts_rudna.png'
+  };
+  const url = mapUrls[mapId];
+  if (!url) return;
+
+  drawBackgroundAndGrid();
+  ctx.fillStyle = 'rgba(0,0,0,0.7)'; ctx.fillRect(0,0,canvas.width,canvas.height);
+  ctx.fillStyle = '#fff'; ctx.font = '30px Inter'; ctx.textAlign = 'center';
+  ctx.fillText('Loading map...', canvas.width/2, canvas.height/2); ctx.textAlign = 'start';
+
+  const img = new Image();
+  img.crossOrigin = 'Anonymous';
+  img.onload = () => { baseImage = img; drawImageContain(img); saveState(); };
+  img.onerror = () => {
+    drawBackgroundAndGrid();
+    ctx.fillStyle = 'rgba(0,0,0,0.7)'; ctx.fillRect(0,0,canvas.width,canvas.height);
+    ctx.fillStyle = '#ff4d4d'; ctx.font = 'bold 40px Oswald'; ctx.textAlign = 'center';
+    ctx.fillText('Failed to load map', canvas.width/2, canvas.height/2 - 30);
+    ctx.font = '24px Inter'; ctx.fillStyle = '#aaa';
+    ctx.fillText('Please try the "Open File" button instead.', canvas.width/2, canvas.height/2 + 30);
+    ctx.textAlign = 'start'; baseImage = null; saveState();
+  };
+  img.src = url;
+});
+
+squadToggleBtn.addEventListener('click', () => squadPanel.classList.toggle('open'));
+closeSquadBtn.addEventListener('click', () => squadPanel.classList.remove('open'));
+
+function createSquad() {
+  const newId = Date.now().toString();
+  squads.push({
+    id: newId, name: `Squad ${squads.length + 1}`, color: '#3498db', players: [], x: null, y: null
   });
-});
-
-// Выбор цвета
-document.querySelectorAll('.color-swatch').forEach(swatch => {
-  swatch.addEventListener('click', () => {
-    if (swatch.id === 'customColorBtn') return;
-    document.querySelectorAll('.color-swatch').forEach(s => s.classList.remove('active'));
-    swatch.classList.add('active');
-    currentColor = swatch.dataset.color;
-    document.getElementById('colorPicker').value = currentColor;
-  });
-});
-document.getElementById('colorPicker').addEventListener('input', (e) => {
-  currentColor = e.target.value;
-  document.querySelectorAll('.color-swatch').forEach(s => s.classList.remove('active'));
-  document.getElementById('customColorBtn').classList.add('active');
-});
-
-// Размер кисти
-document.getElementById('sizeSlider').addEventListener('input', (e) => {
-  currentSize = parseInt(e.target.value);
-  document.getElementById('sizeValue').textContent = currentSize;
-});
-
-// Кнопки действий
-document.getElementById('undoBtn').onclick = undo;
-document.getElementById('clearBtn').onclick = () => {
-  if (confirm("Очистить всё нарисованное?")) {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    saveState();
-  }
-};
-
-// СОХРАНЕНИЕ КАРТИНКИ (КАРТА + РИСУНКИ)
-document.getElementById('saveBtn').onclick = () => {
-  // Создаем временный холст, чтобы объединить карту и рисунки
-  const tempCanvas = document.createElement('canvas');
-  tempCanvas.width = canvas.width;
-  tempCanvas.height = canvas.height;
-  const tempCtx = tempCanvas.getContext('2d');
-  
-  // 1. Рисуем картинку карты с отступом
-  if (bgMap.complete && bgMap.naturalHeight !== 0) {
-      tempCtx.drawImage(bgMap, PADDING, PADDING);
-  }
-  
-  // 2. Рисуем холст с поверх рисунками
-  tempCtx.drawImage(canvas, 0, 0);
-  
-  const link = document.createElement('a');
-  link.download = 'tactical_map.png';
-  link.href = tempCanvas.toDataURL();
-  link.click();
-};
-
-// --- ОТРЯДЫ ---
-let squads = [];
-let placingSquadId = null;
-
-document.getElementById('squadToggle').onclick = () => document.getElementById('squadPanel').classList.add('open');
-document.getElementById('closeSquadPanel').onclick = () => document.getElementById('squadPanel').classList.remove('open');
-
-document.getElementById('addSquadBtn').onclick = () => {
-  const id = 's_' + Date.now();
-  squads.push({ id, name: 'Новый отряд', color: '#3498db', players: [], x: 50, y: 50, placed: false });
   renderSquads();
-};
-
-function renderSquads() {
-  const list = document.getElementById('squadList');
-  list.innerHTML = '';
-  
-  squads.forEach(s => {
-    const card = document.createElement('div');
-    card.className = 'squad-card';
-    
-    let playersHtml = s.players.map((p, i) => `<div class="player-tag">${p} <span onclick="removePlayer('${s.id}', ${i})">×</span></div>`).join('');
-    
-    card.innerHTML = `
-      <div class="squad-card-header">
-        <input class="squad-name-input" value="${s.name}" onchange="updateSquadName('${s.id}', this.value)">
-        <div class="squad-color-dot" style="background:${s.color}"></div>
-      </div>
-      <div class="player-tags">${playersHtml}</div>
-      <div class="add-player-form">
-        <input type="text" class="add-player-input" placeholder="Ник..." onkeydown="if(event.key==='Enter') addPlayer('${s.id}', this)">
-        <button class="add-player-btn" onclick="addPlayer('${s.id}', this.previousElementSibling)">+</button>
-      </div>
-      <div class="squad-actions">
-        <button class="btn-place" onclick="startPlacingSquad('${s.id}')">${s.placed ? 'Переместить' : 'Поставить'}</button>
-        <button class="btn-delete" onclick="deleteSquad('${s.id}')">Удалить</button>
-      </div>
-    `;
-    list.appendChild(card);
-  });
 }
 
-window.updateSquadName = (id, name) => {
-  const s = squads.find(x => x.id === id);
-  if (s) { s.name = name; updateMarker(id); }
-};
-window.removePlayer = (id, index) => {
-  const s = squads.find(x => x.id === id);
-  if (s) { s.players.splice(index, 1); renderSquads(); updateMarker(id); }
-};
-window.addPlayer = (id, input) => {
-  const val = input.value.trim();
-  if (!val) return;
-  const s = squads.find(x => x.id === id);
-  if (s) { s.players.push(val); input.value = ''; renderSquads(); updateMarker(id); }
-};
-window.deleteSquad = (id) => {
-  squads = squads.filter(x => x.id !== id);
-  const marker = document.getElementById('marker-' + id);
-  if (marker) marker.remove();
-  renderSquads();
-};
-window.startPlacingSquad = (id) => {
-  placingSquadId = id;
-  banner.classList.add('active');
-};
-
-wrapper.addEventListener('click', (e) => {
-  if (!placingSquadId) return;
-  
-  const rect = canvas.getBoundingClientRect();
-  const xPct = ((e.clientX - rect.left) / rect.width) * 100;
-  const yPct = ((e.clientY - rect.top) / rect.height) * 100;
-
-  const s = squads.find(x => x.id === placingSquadId);
-  if (s) {
-    s.x = Math.max(0, Math.min(100, xPct));
-    s.y = Math.max(0, Math.min(100, yPct));
-    s.placed = true;
+function deleteSquad(id) {
+  squads = squads.filter(s => s.id !== id);
+  if (placingSquadId === id) {
     placingSquadId = null;
-    banner.classList.remove('active');
-    updateMarker(s.id);
+    placementBanner.classList.remove('active');
+  }
+  renderSquads();
+}
+
+function addPlayer(id, inputElement) {
+  const val = inputElement.value.trim();
+  if (!val) return;
+  const squad = squads.find(s => s.id === id);
+  if (squad) {
+    squad.players.push(val);
+    inputElement.value = '';
     renderSquads();
   }
-});
-
-function updateMarker(id) {
-  const s = squads.find(x => x.id === id);
-  if (!s || !s.placed) return;
-  
-  let marker = document.getElementById('marker-' + id);
-  if (!marker) {
-    marker = document.createElement('div');
-    marker.id = 'marker-' + id;
-    marker.className = 'squad-marker';
-    container.appendChild(marker);
-    
-    let isDragging = false;
-    marker.addEventListener('mousedown', (ev) => {
-      ev.stopPropagation();
-      isDragging = true;
-    });
-    window.addEventListener('mousemove', (ev) => {
-      if (!isDragging) return;
-      const rect = canvas.getBoundingClientRect();
-      s.x = Math.max(0, Math.min(100, ((ev.clientX - rect.left) / rect.width) * 100));
-      s.y = Math.max(0, Math.min(100, ((ev.clientY - rect.top) / rect.height) * 100));
-      marker.style.left = s.x + '%';
-      marker.style.top = s.y + '%';
-    });
-    window.addEventListener('mouseup', () => { isDragging = false; });
-  }
-  
-  marker.style.left = s.x + '%';
-  marker.style.top = s.y + '%';
-  marker.style.borderColor = s.color;
-  marker.innerHTML = `
-    <div class="squad-marker-title" style="color:${s.color}">${s.name}</div>
-    <div class="squad-marker-players">${s.players.join('<br>') || 'Нет игроков'}</div>
-  `;
 }
 
-// --- ТЕМА ---
-document.getElementById('themeToggle').addEventListener('click', () => {
-  document.body.classList.toggle('light-theme');
-  localStorage.setItem('cw-theme', document.body.classList.contains('light-theme') ? 'light' : 'dark');
-});
-if (localStorage.getItem('cw-theme') === 'light') document.body.classList.add('light-theme');
+function removePlayer(squadId, playerIndex) {
+  const squad = squads.find(s => s.id === squadId);
+  if (squad) {
+    squad.players.splice(playerIndex, 1);
+    renderSquads();
+  }
+}
 
-// Инициализация
-canvas.width = 1920;
-canvas.height = 1080;
-container.style.width = '1920px';
-container.style.height = '1080px';
+function changeSquadColor(id, color) {
+  const squad = squads.find(s => s.id === id);
+  if (squad) {
+    squad.color = color;
+    renderSquads();
+  }
+}
+
+function startPlacement(id) {
+  placingSquadId = id;
+  placementBanner.classList.add('active');
+  squadPanel.classList.remove('open');
+}
+
+function renderSquads() {
+  const dict = translations[currentLangCode] || translations['en'];
+
+  squadListContainer.innerHTML = '';
+  squads.forEach(squad => {
+    const card = document.createElement('div');
+    card.className = 'squad-card';
+
+    const header = document.createElement('div');
+    header.className = 'squad-card-header';
+    header.innerHTML = `
+      <input type="text" class="squad-name-input" value="${squad.name}" onchange="updateSquadName('${squad.id}', this.value)">
+      <input type="color" class="squad-color-dot" value="${squad.color}" onchange="changeSquadColor('${squad.id}', this.value)" style="border:none; padding:0; background:transparent; width:20px; height:20px;">
+    `;
+
+    const tags = document.createElement('div');
+    tags.className = 'player-tags';
+    squad.players.forEach((p, i) => {
+      tags.innerHTML += `<div class="player-tag">${p} <span onclick="removePlayer('${squad.id}', ${i})">×</span></div>`;
+    });
+
+    const form = document.createElement('div');
+    form.className = 'add-player-form';
+    form.innerHTML = `
+      <input type="text" class="add-player-input" placeholder="${dict.squad_player_placeholder}" onkeypress="if(event.key === 'Enter') addPlayer('${squad.id}', this)">
+      <button class="add-player-btn" onclick="addPlayer('${squad.id}', this.previousElementSibling)">+</button>
+    `;
+
+    const actions = document.createElement('div');
+    actions.className = 'squad-actions';
+    actions.innerHTML = `
+      <button class="btn-place" onclick="startPlacement('${squad.id}')">${dict.squad_place_btn}</button>
+      <button class="btn-delete" onclick="deleteSquad('${squad.id}')">${dict.squad_delete_btn}</button>
+    `;
+
+    card.appendChild(header);
+    card.appendChild(tags);
+    card.appendChild(form);
+    card.appendChild(actions);
+    squadListContainer.appendChild(card);
+  });
+
+  squadMarkersLayer.innerHTML = '';
+  squads.forEach(squad => {
+    if (squad.x !== null && squad.y !== null) {
+      const marker = document.createElement('div');
+      marker.className = 'squad-marker';
+      marker.style.left = `${squad.x}px`;
+      marker.style.top = `${squad.y}px`;
+      marker.style.borderColor = squad.color;
+      
+      let playersHtml = squad.players.map(p => `<div>• ${p}</div>`).join('');
+      if (squad.players.length === 0) playersHtml = `<div style="opacity:0.5;font-style:italic;">${dict.squad_empty}</div>`;
+
+      marker.innerHTML = `
+        <div class="squad-marker-title" style="color: ${squad.color}">${squad.name}</div>
+        <div class="squad-marker-players">${playersHtml}</div>
+      `;
+
+      marker.addEventListener('mousedown', (e) => {
+        if (e.button !== 0) return;
+        e.stopPropagation(); 
+        
+        const containerRect = canvasContainer.getBoundingClientRect();
+        const offsetX = (e.clientX - containerRect.left) / scale - squad.x;
+        const offsetY = (e.clientY - containerRect.top) / scale - squad.y;
+
+        function onMouseMove(ev) {
+          const newX = (ev.clientX - containerRect.left) / scale - offsetX;
+          const newY = (ev.clientY - containerRect.top) / scale - offsetY;
+          marker.style.left = `${newX}px`; marker.style.top = `${newY}px`;
+          squad.x = newX; squad.y = newY;
+        }
+
+        function onMouseUp() {
+          window.removeEventListener('mousemove', onMouseMove);
+          window.removeEventListener('mouseup', onMouseUp);
+        }
+
+        window.addEventListener('mousemove', onMouseMove);
+        window.addEventListener('mouseup', onMouseUp);
+      });
+
+      squadMarkersLayer.appendChild(marker);
+    }
+  });
+}
+
+function updateSquadName(id, newName) {
+  const squad = squads.find(s => s.id === id);
+  if (squad) { squad.name = newName; renderSquads(); }
+}
+
+(function initLang(){
+  let saved = null;
+  try { saved = localStorage.getItem('cw-factions-lang'); } catch(e) {}
+  const browser = (navigator.language || 'en').slice(0,2).toLowerCase();
+  const map = { ru:'ru', uk:'uk', fr:'fr' };
+  setLanguage(saved || map[browser] || 'en');
+})();
 </script>
 </body>
 </html>
