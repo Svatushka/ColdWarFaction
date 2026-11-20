@@ -149,36 +149,34 @@
 
 <header>
   <div class="header-left">
-    <a href="index.html" class="back-btn">← <span data-i18n="btn_back">На главную</span></a>
-    <button class="admin-btn" id="adminToggleBtn">Admin Mode</button>
+    <a href="index.html" class="back-btn">← <span data-i18n="btn_back">Back to Home</span></a>
+    <button class="admin-btn" id="adminToggleBtn" data-i18n="admin_mode">Admin Mode</button>
   </div>
   <div class="header-controls">
     <button class="icon-btn" id="themeToggle">🌓</button>
     <div class="lang-switch">
       <button class="lang" data-lang="en">EN</button>
       <button class="lang" data-lang="ru">RU</button>
-      <button class="lang" data-lang="fr">FR</button>
-      <button class="lang" data-lang="uk">UA</button>
     </div>
   </div>
 </header>
 
 <main>
   <h1 class="page-title" data-i18n="title_1">Tournaments</h1>
-  <p class="page-sub" data-i18n="title_sub">Турниры и события.</p>
+  <p class="page-sub" data-i18n="title_sub">Tournaments and events.</p>
 
   <div class="filters">
     <div class="filter-group">
-      <span class="filter-label">Status:</span>
-      <button class="filter-btn active" data-filter="ALL">Все</button>
-      <button class="filter-btn" data-filter="upcoming">Предстоящие</button>
-      <button class="filter-btn" data-filter="ongoing">Идут сейчас</button>
-      <button class="filter-btn" data-filter="finished">Завершенные</button>
+      <span class="filter-label" data-i18n="filter_status">Status:</span>
+      <button class="filter-btn active" data-filter="ALL" data-i18n="filter_all">All</button>
+      <button class="filter-btn" data-filter="upcoming" data-i18n="filter_upcoming">Upcoming</button>
+      <button class="filter-btn" data-filter="ongoing" data-i18n="filter_ongoing">Ongoing</button>
+      <button class="filter-btn" data-filter="finished" data-i18n="filter_finished">Finished</button>
     </div>
   </div>
 
   <div class="tournaments-grid" id="tournamentsGrid">
-    <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--muted);">Загрузка...</div>
+    <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--muted);" data-i18n="loading">Loading...</div>
   </div>
 </main>
 
@@ -186,7 +184,7 @@
   <div class="foot-inner">
     <span><span class="dot">■</span> Cold War Factions</span>
     <div class="discord-contact">
-      <span>Проблемы? Пишите в Discord:</span>
+      <span data-i18n="footer_contact">Issues? Write to Discord:</span>
       <a href="https://discordapp.com/users/623589823780749312" target="_blank" class="discord-link">@sirofimo4ka</a>
     </div>
   </div>
@@ -209,113 +207,240 @@
 <div class="modal-overlay" id="adminModal">
   <div class="modal-content">
     <button class="modal-close" id="closeAdminModal">✕</button>
-    <div class="modal-title" style="color:var(--accent);" id="adminModalTitle">Добавить турнир</div>
-    
+    <div class="modal-title" style="color:var(--accent);" id="adminModalTitle" data-i18n="admin_add_title">Add Tournament</div>
+
     <div id="adminUserBar" style="display:none; align-items:center; justify-content:space-between; background:rgba(88,101,242,.1); padding:10px; margin-bottom:15px; border-radius:6px;">
       <span>👤 <b id="adminUserName">—</b></span>
-      <button class="admin-btn" style="color:#e74c3c; border-color:#e74c3c;" onclick="discordLogout()">Выйти</button>
+      <button class="admin-btn" style="color:#e74c3c; border-color:#e74c3c;" onclick="discordLogout()" data-i18n="admin_user_logout">Logout</button>
     </div>
-    
+
     <form id="addTourForm">
       <div class="admin-form-group">
-        <label class="admin-form-label">Название турнира</label>
+        <label class="admin-form-label" data-i18n="form_name">Tournament Name</label>
         <input type="text" class="admin-form-input" id="tName" required>
       </div>
       <div class="admin-row">
         <div class="admin-form-group">
-          <label class="admin-form-label">Статус</label>
+          <label class="admin-form-label" data-i18n="form_status">Status</label>
           <select class="admin-form-select" id="tStatus">
-            <option value="upcoming">Предстоящий</option>
-            <option value="ongoing">Идет сейчас</option>
-            <option value="finished">Завершен</option>
+            <option value="upcoming" data-i18n="status_upcoming">Upcoming</option>
+            <option value="ongoing" data-i18n="status_ongoing">Ongoing</option>
+            <option value="finished" data-i18n="status_finished">Finished</option>
           </select>
         </div>
         <div class="admin-form-group">
-          <label class="admin-form-label">Дата</label>
-          <input type="text" class="admin-form-input" id="tDate" placeholder="20 Ноября, 18:00" required>
+          <label class="admin-form-label" data-i18n="form_date">Date</label>
+          <input type="text" class="admin-form-input" id="tDate" data-i18n-placeholder="form_date_ph" placeholder="November 20, 18:00" required>
         </div>
       </div>
       <div class="admin-form-group">
-        <label class="admin-form-label">Призовой фонд</label>
-        <input type="text" class="admin-form-input" id="tPrize" placeholder="5000 Robux">
+        <label class="admin-form-label" data-i18n="form_prize">Prize Pool</label>
+        <input type="text" class="admin-form-input" id="tPrize" data-i18n-placeholder="form_prize_ph" placeholder="5000 Robux">
       </div>
       <div class="admin-form-group">
-        <label class="admin-form-label">Фото (URL или файл)</label>
+        <label class="admin-form-label" data-i18n="form_photo">Photo (URL or file)</label>
         <div class="file-upload-wrapper">
           <input type="url" class="admin-form-input" id="tImageUrl" placeholder="https://...">
-          <button type="button" class="file-upload-btn" onclick="document.getElementById('tImageFile').click()">📂 Файл</button>
+          <button type="button" class="file-upload-btn" onclick="document.getElementById('tImageFile').click()" data-i18n="form_file">📂 File</button>
           <input type="file" id="tImageFile" accept="image/*" style="display:none;">
         </div>
       </div>
       <div class="admin-form-group">
-        <label class="admin-form-label">Правила и описание (авто-перевод)</label>
+        <label class="admin-form-label" data-i18n="form_desc">Rules and description (auto-translate)</label>
         <textarea class="admin-form-textarea" id="tDesc" required></textarea>
       </div>
-      <button type="submit" class="btn-publish" id="publishBtn">Сохранить</button>
+      <button type="submit" class="btn-publish" id="publishBtn" data-i18n="form_save">Save</button>
     </form>
 
     <div style="margin-top: 20px; padding-top: 20px; border-top: 1px dashed var(--line);">
-      <p style="font-size: 11px; color: var(--muted); margin-bottom: 10px; text-align: center;">Управление файлом БД (tournaments.json)</p>
+      <p style="font-size: 11px; color: var(--muted); margin-bottom: 10px; text-align: center;" data-i18n="db_manage">Database file management (tournaments.json)</p>
       <div style="display: flex; gap: 10px;">
-        <button class="admin-btn" style="flex:1; border-color: #27ae60; color: #27ae60;" onclick="exportDB()">⬇️ Скачать БД</button>
-        <button class="admin-btn" style="flex:1; border-color: #e67e22; color: #e67e22;" onclick="document.getElementById('importFile').click()">⬆️ Загрузить БД</button>
+        <button class="admin-btn" style="flex:1; border-color: #27ae60; color: #27ae60;" onclick="exportDB()" data-i18n="db_download">⬇️ Download DB</button>
+        <button class="admin-btn" style="flex:1; border-color: #e67e22; color: #e67e22;" onclick="document.getElementById('importFile').click()" data-i18n="db_upload">⬆️ Upload DB</button>
         <input type="file" id="importFile" accept=".json" style="display:none" onchange="importDB(event)">
       </div>
     </div>
   </div>
 </div>
 
-<div class="toast" id="toast">Готово!</div>
+<div class="toast" id="toast">Done!</div>
 
 <script>
-// --- НАСТРОЙКИ DISCORD ---
 const DISCORD_AUTH = {
-  clientId: "1572027197026345090",
+  clientId: "ВАШ_DISCORD_CLIENT_ID",
   redirectUri: location.origin + location.pathname,
   adminIds: ["623589823780749312"]
 };
 
-// --- ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ ---
 let toursData = [];
 let isAdmin = false;
 let editingTourId = null;
 let currentStatus = 'ALL';
 let currentLangCode = 'en';
+let initDone = false;
 
 const grid = document.getElementById('tournamentsGrid');
 const modal = document.getElementById('tourModal');
 const adminModal = document.getElementById('adminModal');
 const adminToggleBtn = document.getElementById('adminToggleBtn');
 
-// --- ЗАГРУЗКА JSON ---
+// --- I18N ---
+const translations = {
+  en: {
+    page_title: "Tournaments — Cold War",
+    btn_back: "Back to Home",
+    admin_mode: "Admin Mode",
+    admin_active: "⚙️ Admin",
+    title_1: "Tournaments",
+    title_sub: "Tournaments and events.",
+    filter_status: "Status:",
+    filter_all: "All",
+    filter_upcoming: "Upcoming",
+    filter_ongoing: "Ongoing",
+    filter_finished: "Finished",
+    loading: "Loading...",
+    no_tours: "No tournaments",
+    status_upcoming: "Upcoming",
+    status_ongoing: "Ongoing",
+    status_finished: "Finished",
+    admin_add_title: "Add Tournament",
+    admin_edit_title: "Edit Tournament",
+    admin_user_logout: "Logout",
+    form_name: "Tournament Name",
+    form_status: "Status",
+    form_date: "Date",
+    form_date_ph: "November 20, 18:00",
+    form_prize: "Prize Pool",
+    form_prize_ph: "5000 Robux",
+    form_photo: "Photo (URL or file)",
+    form_file: "📂 File",
+    form_desc: "Rules and description (auto-translate)",
+    form_save: "Save",
+    form_saving: "Translating and saving...",
+    db_manage: "Database file management (tournaments.json)",
+    db_download: "⬇️ Download DB",
+    db_upload: "⬆️ Upload DB",
+    toast_done: "Done!",
+    toast_saved: "Saved locally! Download the DB and push to GitHub.",
+    toast_deleted: "Deleted locally! Don't forget to download the DB.",
+    toast_db_downloaded: "DB file downloaded!",
+    toast_db_uploaded: "DB loaded locally!",
+    toast_db_error: "Error reading file",
+    confirm_delete: "Delete tournament?",
+    footer_contact: "Issues? Write to Discord:"
+  },
+  ru: {
+    page_title: "Турниры — Cold War",
+    btn_back: "На главную",
+    admin_mode: "Режим админа",
+    admin_active: "⚙️ Админ",
+    title_1: "Турниры",
+    title_sub: "Турниры и события.",
+    filter_status: "Статус:",
+    filter_all: "Все",
+    filter_upcoming: "Предстоящие",
+    filter_ongoing: "Идут сейчас",
+    filter_finished: "Завершенные",
+    loading: "Загрузка...",
+    no_tours: "Нет турниров",
+    status_upcoming: "Предстоящий",
+    status_ongoing: "Идет сейчас",
+    status_finished: "Завершен",
+    admin_add_title: "Добавить турнир",
+    admin_edit_title: "Редактировать турнир",
+    admin_user_logout: "Выйти",
+    form_name: "Название турнира",
+    form_status: "Статус",
+    form_date: "Дата",
+    form_date_ph: "20 Ноября, 18:00",
+    form_prize: "Призовой фонд",
+    form_prize_ph: "5000 Robux",
+    form_photo: "Фото (URL или файл)",
+    form_file: "📂 Файл",
+    form_desc: "Правила и описание (авто-перевод)",
+    form_save: "Сохранить",
+    form_saving: "Перевод и сохранение...",
+    db_manage: "Управление файлом БД (tournaments.json)",
+    db_download: "⬇️ Скачать БД",
+    db_upload: "⬆️ Загрузить БД",
+    toast_done: "Готово!",
+    toast_saved: "Добавлено локально! Скачайте БД и закиньте на GitHub.",
+    toast_deleted: "Удалено локально! Не забудьте скачать БД.",
+    toast_db_downloaded: "Файл БД скачан!",
+    toast_db_uploaded: "БД загружена локально!",
+    toast_db_error: "Ошибка чтения файла",
+    confirm_delete: "Удалить турнир?",
+    footer_contact: "Проблемы? Пишите в Discord:"
+  }
+};
+
+const i18nEls = document.querySelectorAll('[data-i18n]');
+const langButtons = document.querySelectorAll('.lang');
+
+function t(key) {
+  return (translations[currentLangCode] && translations[currentLangCode][key]) || key;
+}
+
+function setLanguage(lang) {
+  const dict = translations[lang];
+  if (!dict) return;
+  currentLangCode = lang;
+  document.documentElement.lang = lang;
+
+  i18nEls.forEach(el => {
+    const key = el.dataset.i18n;
+    if (dict[key] !== undefined) el.textContent = dict[key];
+  });
+
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+    const key = el.dataset.i18nPlaceholder;
+    if (dict[key] !== undefined) el.placeholder = dict[key];
+  });
+
+  langButtons.forEach(btn => btn.classList.toggle('active', btn.dataset.lang === lang));
+  document.title = dict.page_title;
+
+  // dynamic title/buttons
+  const adminTitle = document.getElementById('adminModalTitle');
+  if (adminTitle) adminTitle.textContent = editingTourId ? t('admin_edit_title') : t('admin_add_title');
+  const pub = document.getElementById('publishBtn');
+  if (pub && !pub.disabled) pub.textContent = t('form_save');
+  if (isAdmin) adminToggleBtn.textContent = t('admin_active');
+
+  try { localStorage.setItem('cw-factions-lang', lang); } catch(e) {}
+
+  if (initDone) renderTours();
+}
+
+langButtons.forEach(btn => btn.addEventListener('click', () => setLanguage(btn.dataset.lang)));
+
+(function initLang() {
+  let saved = null;
+  try { saved = localStorage.getItem('cw-factions-lang'); } catch(e) {}
+  if (saved && translations[saved]) { setLanguage(saved); return; }
+  const browser = (navigator.language || 'en').slice(0,2).toLowerCase();
+  setLanguage(browser === 'ru' ? 'ru' : 'en');
+})();
+
+// --- DB ---
 async function initDB() {
   const localDB = localStorage.getItem('cw_local_tours');
   if (localDB) {
+    try { toursData = JSON.parse(localDB); } catch(e) {}
+  } else {
     try {
-      toursData = JSON.parse(localDB);
-      renderTours();
-      return;
+      const res = await fetch('tournaments.json?t=' + Date.now());
+      if (res.ok) toursData = await res.json();
     } catch(e) {}
   }
-
-  try {
-    const res = await fetch('tournaments.json?t=' + Date.now());
-    if (res.ok) {
-      toursData = await res.json();
-      renderTours();
-      return;
-    }
-  } catch(e) {}
-  
-  toursData = [];
   renderTours();
+  initDone = true;
 }
 
 function saveToLocal() {
   localStorage.setItem('cw_local_tours', JSON.stringify(toursData));
 }
 
-// --- СКАЧИВАНИЕ И ЗАГРУЗКА JSON ---
 function exportDB() {
   const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(toursData, null, 2));
   const a = document.createElement('a');
@@ -324,7 +449,7 @@ function exportDB() {
   document.body.appendChild(a);
   a.click();
   a.remove();
-  showToast("Файл БД скачан!");
+  showToast(t('toast_db_downloaded'));
 }
 
 function importDB(event) {
@@ -338,59 +463,63 @@ function importDB(event) {
         toursData = imported;
         saveToLocal();
         renderTours();
-        showToast("БД загружена локально!");
+        showToast(t('toast_db_uploaded'));
       }
-    } catch (err) { showToast("Ошибка чтения файла", true); }
+    } catch (err) { showToast(t('toast_db_error'), true); }
   };
   reader.readAsText(file);
   event.target.value = '';
 }
 
-// --- ОТРИСОВКА ---
+// --- RENDER ---
+function statusLabel(status) {
+  if (status === 'upcoming') return { text: t('status_upcoming'), cls: 'status-upcoming' };
+  if (status === 'ongoing') return { text: t('status_ongoing'), cls: 'status-ongoing' };
+  if (status === 'finished') return { text: t('status_finished'), cls: 'status-finished' };
+  return { text: '', cls: '' };
+}
+
 function renderTours() {
   grid.innerHTML = '';
   const filtered = toursData.filter(t => currentStatus === 'ALL' || t.status === currentStatus);
 
   if (filtered.length === 0) {
-    grid.innerHTML = '<div style="grid-column:1/-1; text-align:center; padding:20px; color:var(--muted);">Нет турниров</div>';
+    grid.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:20px; color:var(--muted);">${t('no_tours')}</div>`;
     return;
   }
 
-  filtered.forEach(t => {
+  filtered.forEach(tObj => {
     const card = document.createElement('div');
     card.className = 'tour-card fade-in visible';
-    card.onclick = () => openModal(t.id);
+    card.onclick = () => openModal(tObj.id);
 
-    let statusText = '', statusClass = '';
-    if (t.status === 'upcoming') { statusText = 'Предстоящий'; statusClass = 'status-upcoming'; }
-    if (t.status === 'ongoing') { statusText = 'Идет сейчас'; statusClass = 'status-ongoing'; }
-    if (t.status === 'finished') { statusText = 'Завершен'; statusClass = 'status-finished'; }
+    const sl = statusLabel(tObj.status);
 
     card.innerHTML = `
-      <button class="delete-btn" onclick="deleteTour(event, '${t.id}')">✕</button>
-      <button class="edit-btn" onclick="openEditTour(event, '${t.id}')">✏️</button>
-      <img src="${t.image || 'https://via.placeholder.com/600x160?text=Tournament'}" class="tour-img">
+      <button class="delete-btn" onclick="deleteTour(event, '${tObj.id}')">✕</button>
+      <button class="edit-btn" onclick="openEditTour(event, '${tObj.id}')">✏️</button>
+      <img src="${tObj.image || 'https://via.placeholder.com/600x160?text=Tournament'}" class="tour-img">
       <div class="tour-header">
-        <div class="tour-name">${t.name}</div>
-        <span class="status-badge ${statusClass}">${statusText}</span>
+        <div class="tour-name">${tObj.name}</div>
+        <span class="status-badge ${sl.cls}">${sl.text}</span>
       </div>
       <div class="tour-info">
-        <span>📅 ${t.date}</span>
-        ${t.prize ? `<span class="tour-prize">🏆 ${t.prize}</span>` : ''}
+        <span>📅 ${tObj.date}</span>
+        ${tObj.prize ? `<span class="tour-prize">🏆 ${tObj.prize}</span>` : ''}
       </div>
     `;
     grid.appendChild(card);
   });
 }
 
-// --- ФОРМА ---
+// --- FORM ---
 document.getElementById('addTourForm').addEventListener('submit', async (e) => {
   e.preventDefault();
   if (!isAdmin) return;
 
   const publishBtn = document.getElementById('publishBtn');
   publishBtn.disabled = true;
-  publishBtn.textContent = "Перевод и сохранение...";
+  publishBtn.textContent = t('form_saving');
 
   const name = document.getElementById('tName').value.trim();
   const status = document.getElementById('tStatus').value;
@@ -400,8 +529,8 @@ document.getElementById('addTourForm').addEventListener('submit', async (e) => {
   const descText = document.getElementById('tDesc').value.trim();
 
   const descObj = { [currentLangCode]: descText };
-  const langsToTranslate = ['en', 'ru', 'fr', 'uk'].filter(l => l !== currentLangCode);
-  
+  const langsToTranslate = ['en', 'ru'].filter(l => l !== currentLangCode);
+
   await Promise.all(langsToTranslate.map(async (target) => {
     descObj[target] = await translateText(descText, currentLangCode, target);
   }));
@@ -412,67 +541,60 @@ document.getElementById('addTourForm').addEventListener('submit', async (e) => {
       toursData[idx] = { ...toursData[idx], name, status, date, prize, image, desc: descObj };
     }
   } else {
-    toursData.push({
-      id: "t_" + Date.now(), name, status, date, prize, image, desc: descObj
-    });
+    toursData.push({ id: "t_" + Date.now(), name, status, date, prize, image, desc: descObj });
   }
 
   saveToLocal();
-  
   adminModal.classList.remove('active');
   editingTourId = null;
   document.getElementById('addTourForm').reset();
+  document.getElementById('adminModalTitle').textContent = t('admin_add_title');
   renderTours();
-  
+
   publishBtn.disabled = false;
-  publishBtn.textContent = "Сохранить";
-  showToast("Добавлено локально! Скачайте БД и закиньте на GitHub.");
+  publishBtn.textContent = t('form_save');
+  showToast(t('toast_saved'));
 });
 
-// --- ВСПОМОГАТЕЛЬНЫЕ ---
+// --- HELPERS ---
 function deleteTour(e, id) {
   e.stopPropagation();
-  if (!isAdmin || !confirm("Удалить турнир?")) return;
+  if (!isAdmin || !confirm(t('confirm_delete'))) return;
   toursData = toursData.filter(t => t.id !== id);
   saveToLocal();
   renderTours();
-  showToast("Удалено локально! Не забудьте скачать БД.");
+  showToast(t('toast_deleted'));
 }
 
 function openModal(id) {
-  const t = toursData.find(x => x.id === id);
-  if (!t) return;
-  document.getElementById('mImage').src = t.image || '';
-  document.getElementById('mImage').style.display = t.image ? 'block' : 'none';
-  document.getElementById('mName').textContent = t.name;
-  document.getElementById('mDate').textContent = '📅 ' + t.date;
-  document.getElementById('mPrize').textContent = t.prize ? '🏆 ' + t.prize : '';
-  
-  let statusText = '';
-  if (t.status === 'upcoming') statusText = 'Предстоящий';
-  if (t.status === 'ongoing') statusText = 'Идет сейчас';
-  if (t.status === 'finished') statusText = 'Завершен';
-  document.getElementById('mStatus').textContent = '● ' + statusText;
-
-  document.getElementById('mDesc').textContent = t.desc[currentLangCode] || t.desc['en'];
+  const tObj = toursData.find(x => x.id === id);
+  if (!tObj) return;
+  document.getElementById('mImage').src = tObj.image || '';
+  document.getElementById('mImage').style.display = tObj.image ? 'block' : 'none';
+  document.getElementById('mName').textContent = tObj.name;
+  document.getElementById('mDate').textContent = '📅 ' + tObj.date;
+  document.getElementById('mPrize').textContent = tObj.prize ? '🏆 ' + tObj.prize : '';
+  const sl = statusLabel(tObj.status);
+  document.getElementById('mStatus').textContent = '● ' + sl.text;
+  document.getElementById('mDesc').textContent = (tObj.desc && (tObj.desc[currentLangCode] || tObj.desc['en'])) || '';
   modal.classList.add('active');
 }
 
 function openEditTour(e, id) {
   e.stopPropagation();
   if (!isAdmin) return;
-  const t = toursData.find(x => x.id === id);
-  if (!t) return;
+  const tObj = toursData.find(x => x.id === id);
+  if (!tObj) return;
 
-  editingTourId = t.id;
-  document.getElementById('tName').value = t.name;
-  document.getElementById('tStatus').value = t.status;
-  document.getElementById('tDate').value = t.date;
-  document.getElementById('tPrize').value = t.prize || '';
-  document.getElementById('tImageUrl').value = t.image || '';
-  document.getElementById('tDesc').value = t.desc[currentLangCode] || t.desc['en'];
-  
-  document.getElementById('adminModalTitle').textContent = "Редактировать турнир";
+  editingTourId = tObj.id;
+  document.getElementById('tName').value = tObj.name;
+  document.getElementById('tStatus').value = tObj.status;
+  document.getElementById('tDate').value = tObj.date;
+  document.getElementById('tPrize').value = tObj.prize || '';
+  document.getElementById('tImageUrl').value = tObj.image || '';
+  document.getElementById('tDesc').value = (tObj.desc && (tObj.desc[currentLangCode] || tObj.desc['en'])) || '';
+
+  document.getElementById('adminModalTitle').textContent = t('admin_edit_title');
   adminModal.classList.add('active');
 }
 
@@ -482,7 +604,7 @@ async function translateText(text, from, to) {
     const chunks = [];
     let current = "";
     text.split(" ").forEach(w => {
-      if ((current + w).length > 400) { chunks.push(current.trim()); current = w + " "; } 
+      if ((current + w).length > 400) { chunks.push(current.trim()); current = w + " "; }
       else { current += w + " "; }
     });
     if (current.trim()) chunks.push(current.trim());
@@ -504,7 +626,7 @@ function showToast(msg, isError = false) {
   setTimeout(() => toast.classList.remove('show'), 3000);
 }
 
-// --- DISCORD ВХОД ---
+// --- DISCORD ---
 function b64url(bytes) { return btoa(String.fromCharCode(...bytes)).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, ""); }
 async function startDiscordLogin() {
   const verifier = b64url(crypto.getRandomValues(new Uint8Array(32)));
@@ -533,22 +655,30 @@ async function handleDiscordRedirect() {
     const user = await userRes.json();
     if (DISCORD_AUTH.adminIds.includes(user.id)) {
       isAdmin = true; document.body.classList.add("admin-active");
-      adminToggleBtn.classList.add("active"); adminToggleBtn.textContent = "⚙️ Админ";
+      adminToggleBtn.classList.add("active"); adminToggleBtn.textContent = t('admin_active');
       document.getElementById('adminUserBar').style.display = 'flex';
       document.getElementById('adminUserName').textContent = user.username;
+      document.getElementById('adminModalTitle').textContent = t('admin_add_title');
       adminModal.classList.add('active');
     }
   } catch (e) { console.error(e); }
 }
-adminToggleBtn.addEventListener("click", () => { isAdmin ? adminModal.classList.add('active') : startDiscordLogin(); });
+adminToggleBtn.addEventListener("click", () => {
+  if (isAdmin) {
+    if (!editingTourId) document.getElementById('adminModalTitle').textContent = t('admin_add_title');
+    adminModal.classList.add('active');
+  } else {
+    startDiscordLogin();
+  }
+});
 function discordLogout() {
   isAdmin = false; document.body.classList.remove("admin-active");
-  adminToggleBtn.classList.remove("active"); adminToggleBtn.textContent = "Admin Mode";
+  adminToggleBtn.classList.remove("active"); adminToggleBtn.textContent = t('admin_mode');
   document.getElementById('adminUserBar').style.display = 'none';
   adminModal.classList.remove('active');
 }
 
-// --- ИНИЦИАЛИЗАЦИЯ ---
+// --- INIT ---
 document.getElementById('themeToggle').addEventListener('click', () => {
   document.body.classList.toggle('light-theme');
   localStorage.setItem('cw-theme', document.body.classList.contains('light-theme') ? 'light' : 'dark');
