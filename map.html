@@ -620,11 +620,9 @@
   <div class="header-controls">
     <button class="icon-btn" id="themeToggle" title="Toggle Theme">🌓</button>
     <div class="lang-switch">
-      <button class="lang" data-lang="en">EN</button>
-      <button class="lang" data-lang="ru">RU</button>
-      <button class="lang" data-lang="fr">FR</button>
-      <button class="lang" data-lang="uk">UA</button>
-    </div>
+  <button class="lang" data-lang="en">EN</button>
+  <button class="lang" data-lang="ru">RU</button>
+</div>
   </div>
 </header>
 
@@ -1314,8 +1312,7 @@ function updateSquadName(id, newName) {
   let saved = null;
   try { saved = localStorage.getItem('cw-factions-lang'); } catch(e) {}
   const browser = (navigator.language || 'en').slice(0,2).toLowerCase();
-  const map = { ru:'ru', uk:'uk', fr:'fr' };
-  setLanguage(saved || map[browser] || 'en');
+  setLanguage(saved && translations[saved] ? saved : (browser === 'ru' ? 'ru' : 'en'));
 })();
 </script>
 </body>
