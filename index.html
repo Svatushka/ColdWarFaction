@@ -484,11 +484,9 @@
     <div class="header-controls">
       <button class="icon-btn" id="themeToggle" title="Toggle Theme">🌓</button>
       <div class="lang-switch">
-        <button class="lang" data-lang="en">EN</button>
-        <button class="lang" data-lang="ru">RU</button>
-        <button class="lang" data-lang="fr">FR</button>
-        <button class="lang" data-lang="uk">UA</button>
-      </div>
+  <button class="lang" data-lang="en">EN</button>
+  <button class="lang" data-lang="ru">RU</button>
+</div>
     </div>
   </nav>
 </header>
@@ -704,8 +702,7 @@ langButtons.forEach(btn => btn.addEventListener('click', () => setLanguage(btn.d
   try { saved = localStorage.getItem('cw-factions-lang'); } catch(e) {}
   if(saved && translations[saved]){ setLanguage(saved); return; }
   const browser = (navigator.language || 'en').slice(0,2).toLowerCase();
-  const map = { ru:'ru', uk:'uk', fr:'fr' };
-  setLanguage(map[browser] || 'en');
+  setLanguage(browser === 'ru' ? 'ru' : 'en');
 })();
 
 // --- ЖИВОЙ СЧЕТЧИК ИЗ БАЗЫ ДАННЫХ (localStorage или factions.json) ---
